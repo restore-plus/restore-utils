@@ -1,7 +1,18 @@
+.prodes_dir <- function(version, year) {
+    prodes_base_dir <- "data/raw/masks/prodes-mask-forest"
+    prodes_base_dir <- Sys.getenv("RESTORE_MASK_PRODES_BASE_DIR", prodes_base_dir)
+
+    fs::path(prodes_base_dir) / version / year
+}
+
+.prodes_rds <- function(prodes_dir) {
+    fs::path(prodes_dir) / "prodes.rds"
+}
+
 #' @export
-load_prodes_2014 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2014/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2014 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2014)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -47,9 +58,9 @@ load_prodes_2014 <- function(multicores = 32, memsize = 120) {
 
 
 #' @export
-load_prodes_2015 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2015/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2015 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2015)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -96,9 +107,9 @@ load_prodes_2015 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2016 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2016/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2016 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2016)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -147,9 +158,9 @@ load_prodes_2016 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2017 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2017/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2017 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2017)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -200,9 +211,9 @@ load_prodes_2017 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2018 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2018/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2018 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2018)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -255,9 +266,9 @@ load_prodes_2018 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2019 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2019/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2019 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2019)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -312,9 +323,9 @@ load_prodes_2019 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2020 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2020/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2020 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2020)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -372,9 +383,9 @@ load_prodes_2020 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2021 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2021/"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2021 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2021)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -434,9 +445,9 @@ load_prodes_2021 <- function(multicores = 32, memsize = 120) {
 
 
 #' @export
-load_prodes_2022 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2022"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2022 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2022)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
@@ -497,9 +508,9 @@ load_prodes_2022 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2023 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2023"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2023 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2023)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
         prodes <- readRDS(prodes_rds)
@@ -560,9 +571,9 @@ load_prodes_2023 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_prodes_2024 <- function(multicores = 32, memsize = 120) {
-    prodes_dir <- "data/raw/masks/prodes-mask-forest/2024"
-    prodes_rds <- fs::path(prodes_dir) / "prodes.rds"
+load_prodes_2024 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2024)
+    prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
 
