@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+_extras/
+data/raw/
+data/derived/
+analysis/_others
