@@ -185,7 +185,6 @@ eco3_mask <- sits_reclassify(
     cube = eco3_mask,
     mask = terraclass_2018,
     rules = list(
-        # Onde o TerraClass for Semiperene, vira Agr. Semiperene
         "Agr. Semiperene" = cube == "Agr. Semiperene" | mask == "CULTURA AGRICOLA SEMIPERENE"
     ),
     multicores = multicores,
