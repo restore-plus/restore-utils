@@ -40,7 +40,7 @@ terraclass_2018 <- load_terraclass_2018(multicores = multicores, memsize = memsi
 #
 # Terraclass
 #
-terraclass <- load_terraclass_2014(multicores = multicores, memsize = memsize)
+terraclass_2014 <- load_terraclass_2014(multicores = multicores, memsize = memsize)
 
 
 #
@@ -131,7 +131,7 @@ eco3_mask <- sits_reclassify(
     mask = terraclass_2018,
     rules = list(
         # Onde o TerraClass for Silvicultura, vira Silvicultura
-        "Silvicultura" = cube == "Silvicultura" | mask == "SILVICULTURA",
+        "Silvicultura" = cube == "Silvicultura" | mask == "SILVICULTURA"
     ),
     multicores = multicores,
     memsize = memsize,
