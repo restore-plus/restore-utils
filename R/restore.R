@@ -1,6 +1,6 @@
 
 #' @export
-load_restore_map <- function(data_dir, multicores = 32, memsize = 120) {
+load_restore_map <- function(data_dir, multicores = 32, memsize = 120, ...) {
     sits_cube(
         source = "BDC",
         collection = "LANDSAT-OLI-16D",
@@ -24,6 +24,7 @@ load_restore_map <- function(data_dir, multicores = 32, memsize = 120) {
                    "11" = "Silvicultura",
                    "12" = "vegetacao_secundaria",
                    "13" = "Wetland_ICS"
-        )
+        ),
+        ...
     )
 }
