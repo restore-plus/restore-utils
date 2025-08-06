@@ -1,7 +1,15 @@
-
 _extras/
 data/raw/
 data/derived/
 analysis/_others
-.Rhistory
 .Rproj.user/
+.Rprofile
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+src/*.o
+src/*.dll
+src/*.so
+.rcookies
+.lintr
