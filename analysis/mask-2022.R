@@ -22,7 +22,7 @@ output_dir <- fs::path(output_dir_base) / result_mask_id
 #
 # PRODES data
 #
-prodes <- load_prodes_2022()
+prodes <- load_prodes_2022(multicores = multicores, memsize = memsize)
 
 #
 # Terraclass
