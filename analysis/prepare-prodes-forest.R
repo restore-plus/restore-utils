@@ -2,17 +2,6 @@ library(sits)
 library(restoremasks)
 
 #
-# Auxiliary functions
-#
-create_output_dir <- function(base_dir, name) {
-    output_dir <- fs::path(base_dir) / name
-
-    fs::dir_create(output_dir)
-
-    return(output_dir)
-}
-
-#
 # General definitions
 #
 memsize <- 120
@@ -27,7 +16,7 @@ prodes_2024 <- load_prodes_2024(multicores = multicores, memsize = memsize)
 #
 # Create base output dir
 #
-base_output_dir <- create_output_dir(base_output_dir, version)
+base_output_dir <- create_data_dir(base_output_dir, version)
 
 #
 # Note: We start generating masks in 2023, as 2024 is the most recent data, and
@@ -38,7 +27,7 @@ base_output_dir <- create_output_dir(base_output_dir, version)
 #
 # 2023
 #
-output_dir <- create_output_dir(base_output_dir, "2023")
+output_dir <- create_data_dir(base_output_dir, "2023")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -54,7 +43,7 @@ sits_reclassify(
 #
 # 2022
 #
-output_dir <- create_output_dir(base_output_dir, "2022")
+output_dir <- create_data_dir(base_output_dir, "2022")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -70,7 +59,7 @@ sits_reclassify(
 #
 # 2021
 #
-output_dir <- create_output_dir(base_output_dir, "2021")
+output_dir <- create_data_dir(base_output_dir, "2021")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -86,7 +75,7 @@ sits_reclassify(
 #
 # 2020
 #
-output_dir <- create_output_dir(base_output_dir, "2020")
+output_dir <- create_data_dir(base_output_dir, "2020")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -104,7 +93,7 @@ sits_reclassify(
 #
 # 2019
 #
-output_dir <- create_output_dir(base_output_dir, "2019")
+output_dir <- create_data_dir(base_output_dir, "2019")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -122,7 +111,7 @@ sits_reclassify(
 #
 # 2018
 #
-output_dir <- create_output_dir(base_output_dir, "2018")
+output_dir <- create_data_dir(base_output_dir, "2018")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -140,7 +129,7 @@ sits_reclassify(
 #
 # 2017
 #
-output_dir <- create_output_dir(base_output_dir, "2017")
+output_dir <- create_data_dir(base_output_dir, "2017")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -159,7 +148,7 @@ sits_reclassify(
 #
 # 2016
 #
-output_dir <- create_output_dir(base_output_dir, "2016")
+output_dir <- create_data_dir(base_output_dir, "2016")
 
 sits_reclassify(
     cube = prodes_2024,
@@ -178,7 +167,7 @@ sits_reclassify(
 #
 # 2015
 #
-output_dir <- create_output_dir(base_output_dir, "2015")
+output_dir <- create_data_dir(base_output_dir, "2015")
 
 sits_reclassify(
     cube = prodes_2024,
