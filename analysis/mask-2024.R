@@ -171,7 +171,10 @@ eco3_mask <- sits_reclassify(
     mask = terraclass,
     rules = list(
         # Onde o cubo for Agr. Semiperene mas o TerraClass não for, vira pasto_semiperene
-        "pasto_semiperene" = cube == "Agr. Semiperene" & mask != "CULTURA AGRICOLA SEMIPERENE"
+        "pasto_semiperene" = cube == "Agr. Semiperene" &
+                            !(mask %in% c("CULTURA AGRICOLA SEMIPERENE",
+                                          "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                                          "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO"))
     ),
     multicores = multicores,
     memsize = memsize,
@@ -187,7 +190,11 @@ eco3_mask <- sits_reclassify(
     cube = eco3_mask,
     mask = terraclass,
     rules = list(
-        "mineracao" = mask == "MINERACAO"
+        "2ciclos" = cube == "2ciclos"  |
+                    (cube == "Agr. Semiperene" & mask %in% c(
+                        "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                        "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO"
+                    ))
     ),
     multicores = multicores,
     memsize = memsize,
@@ -203,7 +210,7 @@ eco3_mask <- sits_reclassify(
     cube = eco3_mask,
     mask = terraclass,
     rules = list(
-        "area_urbanizada" = mask == "URBANIZADA"
+        "mineracao" = mask == "MINERACAO"
     ),
     multicores = multicores,
     memsize = memsize,
@@ -219,10 +226,7 @@ eco3_mask <- sits_reclassify(
     cube = eco3_mask,
     mask = terraclass,
     rules = list(
-        "agua" = (
-            mask == "CORPO DAGUA" &
-                !cube %in% c("Wetland_ICS", "Seasonally_Flooded_ICS")
-        )
+        "area_urbanizada" = mask == "URBANIZADA"
     ),
     multicores = multicores,
     memsize = memsize,
@@ -238,12 +242,31 @@ eco3_mask <- sits_reclassify(
     cube = eco3_mask,
     mask = terraclass,
     rules = list(
-        "nat_non_forest" = mask == "NATURAL NAO FLORESTAL"
+        "agua" = (
+            mask == "CORPO DAGUA" &
+                !cube %in% c("Wetland_ICS", "Seasonally_Flooded_ICS")
+        )
     ),
     multicores = multicores,
     memsize = memsize,
     output_dir = output_dir,
     version = "mask-terraclass-step12"
+)
+
+
+#
+# Step 13
+#
+eco3_mask <- sits_reclassify(
+    cube = eco3_mask,
+    mask = terraclass,
+    rules = list(
+        "nat_non_forest" = mask == "NATURAL NAO FLORESTAL"
+    ),
+    multicores = multicores,
+    memsize = memsize,
+    output_dir = output_dir,
+    version = "mask-terraclass-step13"
 )
 
 
