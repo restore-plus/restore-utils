@@ -30,10 +30,10 @@ load_restore_map <- function(data_dir, multicores = 32, memsize = 120, ...) {
 }
 
 #' @export
-get_restore_masks_files <- function(version, multicores = 32, memsize = 120, ...) {
-    files_dir <- create_data_dir("data/derived/masks", version)
+get_restore_masks_files <- function(mask_version, files_version, multicores = 32, memsize = 120) {
+    files_dir <- create_data_dir("data/derived/masks", mask_version)
 
-    files_pattern <- paste0("^LANDSAT_OLI_MOSAIC_\\d{4}-01-01_\\d{4}-12-01_class_", version, "\\.tif$")
+    files_pattern <- paste0("^LANDSAT_OLI_MOSAIC_\\d{4}-01-01_\\d{4}-12-01_class_", files_version, "\\.tif$")
 
     files <- list.files(
         path = files_dir,

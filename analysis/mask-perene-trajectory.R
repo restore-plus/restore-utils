@@ -4,7 +4,7 @@ library(restoremasks)
 #
 # General definitions
 #
-data_version <- "mask-mcti-v3"
+mask_version <- "mask-mcti-v3"
 files_version <- "mask-clean-step8"
 output_version <- "mask-clean-step9-perene-reclass"
 
@@ -13,20 +13,26 @@ base_output_dir <- "data/derived/masks"
 vs_class_id <- 12    # "vegetacao_secundaria"
 perene_class_id <- 2 # "Ag_perene"
 
+memsize <- 180
+multicores <- 32
+
 
 #
 # 1. Generate directories
 #
-data_dir <- create_data_dir(data_dir, data_version)
-
-output_dir <- create_data_dir(base_output_dir, data_version)
+output_dir <- create_data_dir(base_output_dir, mask_version)
 output_dir <- create_data_dir(output_dir, "perene-transitions")
 
 
 #
 # 2. Get masks files
 #
-files <- get_restore_masks_files(files_version)
+files <- get_restore_masks_files(
+    mask_version = mask_version,
+    files_version = files_version,
+    multicores = multicores,
+    memsize = memsize
+)
 
 
 #
