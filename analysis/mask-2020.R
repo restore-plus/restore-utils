@@ -24,15 +24,18 @@ output_dir <- fs::path(output_dir_base) / result_mask_id
 #
 prodes <- load_prodes_2020(multicores = multicores, memsize = memsize)
 
+
 #
 # Terraclass_2022
 #
 terraclass_2022 <- load_terraclass_2022(multicores = multicores, memsize = memsize)
 
+
 #
 # Terraclass_2020
 #
 terraclass_2020 <- load_terraclass_2020(multicores = multicores, memsize = memsize)
+
 
 #
 # Classification
