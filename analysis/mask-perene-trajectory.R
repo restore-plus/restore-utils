@@ -52,7 +52,7 @@ file_reclassified <- reclassify_trajectory_perene_data(
 #
 # 4. Save results as classification maps
 #
-reclassify_trajectory_perene_result_to_maps(
+reclassify_perene_result_to_maps(
     files             = files,
     file_reclassified = file_reclassified,
     version           = output_version
