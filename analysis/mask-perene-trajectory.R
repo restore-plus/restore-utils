@@ -13,8 +13,8 @@ base_output_dir <- "data/derived/masks"
 vs_class_id <- 12    # "vegetacao_secundaria"
 perene_class_id <- 2 # "Ag_perene"
 
-memsize <- 180
-multicores <- 32
+memsize <- 200
+multicores <- 28
 
 
 #

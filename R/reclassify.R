@@ -10,28 +10,28 @@ reclassify_trajectory_perene_data <- function(files,
                                               multicores,
                                               memsize,
                                               output_dir) {
+    # Create output directory
     output_dir <- fs::path(output_dir)
     fs::dir_create(output_dir)
-    stopifnot(is.character(output_dir))
-
+    # Define output file
     out_filename <- .reclassify_perene_filename(version)
     out_file <- fs::path(output_dir) / out_filename
-
+    # If result already exists, return it!
     if (file.exists(out_file)) {
         return(out_file)
     }
-
+    # The following functions define optimal parameters for parallel processing
     rast_template <- sits:::.raster_open_rast(files)
     image_size <- list(
         nrows = sits:::.raster_nrows(rast_template),
         ncols = sits:::.raster_ncols(rast_template)
     )
-
+    # Get block size
     block <- sits:::.raster_file_blocksize(sits:::.raster_open_rast(files))
     # Check minimum memory needed to process one block
     job_block_memsize <- sits:::.jobs_block_memsize(
         block_size = sits:::.block_size(block = block, overlap = 0),
-        npaths = (length(files) * terra::nlyr(rast_template)),
+        npaths = length(files),
         nbytes = 8,
         proc_bloat = sits:::.conf("processing_bloat")
     )
@@ -59,35 +59,47 @@ reclassify_trajectory_perene_data <- function(files,
             default_crs = terra::crs(rast_template)
         )
     )
+    # Update chunk to save extra information
+    chunks[["files"]] <- rep(list(files), nrow(chunks))
+    chunks[["out_filename"]] <- out_filename
+    chunks[["vs_class_id"]] <- vs_class_id
+    chunks[["perene_class_id"]] <- perene_class_id
     # Start workers
     sits:::.parallel_start(workers = multicores)
     on.exit(sits:::.parallel_stop(), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
+        # Get chunk block
         block <- sits:::.block(chunk)
+        # Get extra context defined by restoremasks
+        files <- chunk[["files"]][[1]]
+        out_filename <- chunk[["out_filename"]]
+        vs_class_id <- chunk[["vs_class_id"]]
+        perene_class_id <- chunk[["perene_class_id"]]
+        # Define block file name / path
         block_file <- sits:::.file_block_name(
             pattern = tools::file_path_sans_ext(out_filename),
             block = block,
             output_dir = output_dir
         )
-
+        # If block already exists, return it!
         if (file.exists(block_file)) {
             return(block_file)
         }
-
+        # Read raster values
         values <- sits:::.raster_read_rast(files = files, block = block)
-
-        values <- C_trajectory_transition_analysis(
+        # Process data
+        values <- restoremasks:::C_trajectory_transition_analysis(
             data = values,
             reference_class = vs_class_id,
             neighbor_class  = perene_class_id
         )
-        values <- C_trajectory_transition_analysis(
+        values <- restoremasks:::C_trajectory_transition_analysis(
             data = values,
             reference_class = perene_class_id,
             neighbor_class  = vs_class_id
         )
-
+        # Prepare and save results as raster
         sits:::.raster_write_block(
             files = block_file,
             block = block,
@@ -97,9 +109,12 @@ reclassify_trajectory_perene_data <- function(files,
             missing_value = 255,
             crop_block = NULL
         )
+        # Free memory
+        gc()
+        # Returned block file
         block_file
     }, progress = TRUE)
-
+    # Merge raster blocks
     sits:::.raster_merge_blocks(
         out_files = out_file,
         base_file = files,
@@ -108,10 +123,9 @@ reclassify_trajectory_perene_data <- function(files,
         missing_value = 255,
         multicores = multicores
     )
-
-    # remove block files
+    # Remove block files
     unlink(block_files)
-
+    # Return!
     return(out_file)
 }
 
