@@ -47,8 +47,17 @@ load_prodes_2014 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "52" = "r2012",
                        "53" = "r2013",
                        "54" = "r2014",
+                       "55" = "r2015",
+                       "56" = "r2016",
+                       "57" = "r2017",
+                       "58" = "r2018",
+                       "59" = "r2019",
+                       "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -99,8 +108,16 @@ load_prodes_2015 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "53" = "r2013",
                        "54" = "r2014",
                        "55" = "r2015",
+                       "56" = "r2016",
+                       "57" = "r2017",
+                       "58" = "r2018",
+                       "59" = "r2019",
+                       "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -152,8 +169,15 @@ load_prodes_2016 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "54" = "r2014",
                        "55" = "r2015",
                        "56" = "r2016",
+                       "57" = "r2017",
+                       "58" = "r2018",
+                       "59" = "r2019",
+                       "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -207,8 +231,14 @@ load_prodes_2017 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "55" = "r2015",
                        "56" = "r2016",
                        "57" = "r2017",
+                       "58" = "r2018",
+                       "59" = "r2019",
+                       "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -264,8 +294,13 @@ load_prodes_2018 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "56" = "r2016",
                        "57" = "r2017",
                        "58" = "r2018",
+                       "59" = "r2019",
+                       "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -323,8 +358,12 @@ load_prodes_2019 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "57" = "r2017",
                        "58" = "r2018",
                        "59" = "r2019",
+                       "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -384,8 +423,11 @@ load_prodes_2020 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "58" = "r2018",
                        "59" = "r2019",
                        "60" = "r2020",
+                       "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -448,8 +490,10 @@ load_prodes_2021 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "59" = "r2019",
                        "60" = "r2020",
                        "61" = "r2021",
+                       "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -514,8 +558,9 @@ load_prodes_2022 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "60" = "r2020",
                        "61" = "r2021",
                        "62" = "r2022",
+                       "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -579,8 +624,8 @@ load_prodes_2023 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "61" = "r2021",
                        "62" = "r2022",
                        "63" = "r2023",
+                       "64" = "r2024",
                        "91" = "Hidrografia",
-                       "99" = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
