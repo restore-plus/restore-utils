@@ -5,3 +5,7 @@ C_trajectory_transition_analysis <- function(data, reference_class, neighbor_cla
     .Call(`_restoremasks_C_trajectory_transition_analysis`, data, reference_class, neighbor_class)
 }
 
+C_trajectory_neighbor_analysis <- function(data, reference_class, replacement_class) {
+    .Call(`_restoremasks_C_trajectory_neighbor_analysis`, data, reference_class, replacement_class)
+}
+
