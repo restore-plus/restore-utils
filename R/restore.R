@@ -1,6 +1,27 @@
 
 #' @export
-load_restore_map <- function(data_dir, multicores = 32, memsize = 120, ...) {
+load_restore_map <- function(data_dir, multicores = 32, memsize = 120, labels = NULL, ...) {
+    # Default classification label - based on classification results
+    default_label <- c(
+       "1" = "2ciclos",
+       "2" = "Ag_perene",
+       "3" = "Agr. Semiperene",
+       "4" = "agua",
+       "5" = "Forest",
+       "6" = "Mountainside_Forest",
+       "7" = "past_arbustiva",
+       "8" = "past_herbacea",
+       "9" = "Riparian_Forest",
+       "10" = "Seasonally_Flooded_ICS",
+       "11" = "Silvicultura",
+       "12" = "vegetacao_secundaria",
+       "13" = "Wetland_ICS"
+    )
+
+    if (is.null(labels)) {
+        labels = default_label
+    }
+
     sits_cube(
         source = "BDC",
         collection = "LANDSAT-OLI-16D",
@@ -11,20 +32,7 @@ load_restore_map <- function(data_dir, multicores = 32, memsize = 120, ...) {
                        "tile", "start_date", "end_date",
                        "band", "version"),
         bands = "class",
-        labels = c("1" = "2ciclos",
-                   "2" = "Ag_perene",
-                   "3" = "Agr. Semiperene",
-                   "4" = "agua",
-                   "5" = "Forest",
-                   "6" = "Mountainside_Forest",
-                   "7" = "past_arbustiva",
-                   "8" = "past_herbacea",
-                   "9" = "Riparian_Forest",
-                   "10" = "Seasonally_Flooded_ICS",
-                   "11" = "Silvicultura",
-                   "12" = "vegetacao_secundaria",
-                   "13" = "Wetland_ICS"
-        ),
+        labels = labels,
         ...
     )
 }
@@ -42,7 +50,7 @@ get_restore_masks_files <- function(mask_version, files_version, multicores = 32
         full.names = TRUE
     )
 
-    years <- as.integer(gsub(".*/(\\d{4})/.*", "\\1", files))
+    years <- get_mask_file_year(files)
 
     # sort files by year
     ordered_indices <- order(years)

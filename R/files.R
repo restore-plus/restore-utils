@@ -7,3 +7,8 @@ create_data_dir <- function(base_dir, name) {
 
     return(output_dir)
 }
+
+#' @export
+get_mask_file_year <- function(file) {
+    as.integer(gsub(".*/(\\d{4})/.*", "\\1", file))
+}

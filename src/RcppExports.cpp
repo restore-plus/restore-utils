@@ -10,6 +10,19 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// C_remap_values
+NumericMatrix C_remap_values(NumericMatrix& data, int source, int target);
+RcppExport SEXP _restoremasks_C_remap_values(SEXP dataSEXP, SEXP sourceSEXP, SEXP targetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< int >::type target(targetSEXP);
+    rcpp_result_gen = Rcpp::wrap(C_remap_values(data, source, target));
+    return rcpp_result_gen;
+END_RCPP
+}
 // C_trajectory_transition_analysis
 NumericMatrix C_trajectory_transition_analysis(NumericMatrix data, int reference_class, int neighbor_class);
 RcppExport SEXP _restoremasks_C_trajectory_transition_analysis(SEXP dataSEXP, SEXP reference_classSEXP, SEXP neighbor_classSEXP) {
@@ -38,6 +51,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_restoremasks_C_remap_values", (DL_FUNC) &_restoremasks_C_remap_values, 3},
     {"_restoremasks_C_trajectory_transition_analysis", (DL_FUNC) &_restoremasks_C_trajectory_transition_analysis, 3},
     {"_restoremasks_C_trajectory_neighbor_analysis", (DL_FUNC) &_restoremasks_C_trajectory_neighbor_analysis, 3},
     {NULL, NULL, 0}

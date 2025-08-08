@@ -5,16 +5,16 @@ library(restoremasks)
 # General definitions
 #
 mask_version <- "mask-mcti-v3"
-files_version <- "mask-terraclass-step13"
-output_version <- "step14"
+files_version <- "mask-terraclass-step13step14-perene-trajectory-only-perene-reclass"
+output_version <- "plus-trajectory-neighbor"
 
 base_output_dir <- "data/derived/masks"
 
-perene_class_id <- 2       # "Ag_perene"
+perene_class_id      <- 2  # "Ag_perene"
 replacement_class_id <- 21 # "Pasto_Perene"
 
 memsize <- 200
-multicores <- 28
+multicores <- 32
 
 
 #

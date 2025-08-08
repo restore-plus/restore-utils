@@ -5,13 +5,13 @@ library(restoremasks)
 # General definitions
 #
 mask_version <- "mask-mcti-v3"
-files_version <- "mask-clean-step8"
-output_version <- "mask-clean-step9-perene-reclass"
+files_version <- "mask-terraclass-step13"
+output_version <- "step14-perene-trajectory-only"
 
 base_output_dir <- "data/derived/masks"
 
-vs_class_id <- 12    # "vegetacao_secundaria"
-perene_class_id <- 2 # "Ag_perene"
+vs_class_id     <- 12    # "vegetacao_secundaria"
+perene_class_id <- 2     # "Ag_perene"
 
 memsize <- 200
 multicores <- 28
