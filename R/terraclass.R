@@ -1,7 +1,18 @@
+.terraclass_dir <- function(version, year) {
+    tc_base_dir <- "data/derived/masks/base/terraclass"
+    tc_base_dir <- .project_env_variable("MASK_TERRACLASS_BASE_DIR", tc_base_dir)
+
+    fs::path(tc_base_dir) / version / year
+}
+
+.terraclass_rds <- function(terraclass_dir) {
+    fs::path(terraclass_dir) / "terraclass.rds"
+}
+
 #' @export
-load_terraclass_2014 <- function(multicores = 32, memsize = 120) {
-    terraclass_dir <- "data/raw/masks/terraclass-mask/2014/"
-    terraclass_rds <- fs::path(terraclass_dir) / "terraclass.rds"
+load_terraclass_2014 <- function(version = "v1", multicores = 32, memsize = 120) {
+    terraclass_dir <- .terraclass_dir(version, 2014)
+    terraclass_rds <- .terraclass_rds(terraclass_dir)
 
     if (fs::file_exists(terraclass_rds)) {
 
@@ -43,9 +54,9 @@ load_terraclass_2014 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_terraclass_2018 <- function(multicores = 32, memsize = 120) {
-    terraclass_dir <- "data/raw/masks/terraclass-mask/2018/"
-    terraclass_rds <- fs::path(terraclass_dir) / "terraclass.rds"
+load_terraclass_2018 <- function(version = "v1", multicores = 32, memsize = 120) {
+    terraclass_dir <- .terraclass_dir(version, 2018)
+    terraclass_rds <- .terraclass_rds(terraclass_dir)
 
     if (fs::file_exists(terraclass_rds)) {
 
@@ -89,9 +100,9 @@ load_terraclass_2018 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_terraclass_2020 <- function(multicores = 32, memsize = 120) {
-    terraclass_dir_2020 <- "data/raw/masks/terraclass-mask/2020/"
-    terraclass_rds_2020 <- fs::path(terraclass_dir_2020) / "terraclass.rds"
+load_terraclass_2020 <- function(version = "v1", multicores = 32, memsize = 120) {
+    terraclass_dir_2020 <- .terraclass_dir(version, 2020)
+    terraclass_rds_2020 <- .terraclass_rds(terraclass_dir_2020)
 
     if (fs::file_exists(terraclass_rds_2020)) {
 
@@ -134,9 +145,9 @@ load_terraclass_2020 <- function(multicores = 32, memsize = 120) {
 }
 
 #' @export
-load_terraclass_2022 <- function(multicores = 32, memsize = 120) {
-    terraclass_dir <- "data/raw/masks/terraclass-mask/2022/"
-    terraclass_rds <- fs::path(terraclass_dir) / "terraclass.rds"
+load_terraclass_2022 <- function(version = "v1", multicores = 32, memsize = 120) {
+    terraclass_dir <- .terraclass_dir(version, 2022)
+    terraclass_rds <- .terraclass_rds(terraclass_dir)
 
     if (fs::file_exists(terraclass_rds)) {
 

@@ -1,3 +1,50 @@
+.roi_ecoregion_data_file <- function() {
+    default_file <- "data/raw/region/amazon-regions-bdc-md.gpkg"
+
+    fs::path(Sys.getenv("RESTORE_PLUS_REG3_ROI_FILE", default_file))
+}
+
+.roi_ecoregion_name <- function(region_id) {
+    paste0("eco_", region_id)
+}
+
+.roi_ecoregion_sf <- function(region_id, crs) {
+    # Region name
+    eco_name <- .roi_ecoregion_name(region_id)
+
+    # Load ecoregion roi file
+    eco_region <- suppressMessages(sf::st_read(.roi_ecoregion_data_file()))
+
+    # Transform / Filter region (region 3)
+    eco_region <- sf::st_transform(eco_region, crs = crs)
+    eco_region <- dplyr::filter(eco_region, layer == eco_name) |>
+        dplyr::select(-gid, -id, -grs_schema) |>
+        sf::st_union() |>
+        sf::st_convex_hull()
+}
+
+#' @export
+roi_ecoregions <- function(region_id, crs, as_file = FALSE) {
+    # generate eco region geometry
+    eco_region_geom <- .roi_ecoregion_sf(
+        region_id = region_id,
+        crs = crs
+    )
+
+    if (as_file) {
+        # Create temp file
+        eco_region_file <- fs::file_temp(ext = "gpkg")
+
+        # Save sf
+        sf::st_write(eco_region_geom, eco_region_file)
+
+        # Update result variable
+        eco_region_geom <- eco_region_file
+    }
+
+    # return!
+    return(eco_region_geom)
+}
 
 
 #' @export

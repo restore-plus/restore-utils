@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // C_remap_values
 NumericMatrix C_remap_values(NumericMatrix& data, int source, int target);
-RcppExport SEXP _restoremasks_C_remap_values(SEXP dataSEXP, SEXP sourceSEXP, SEXP targetSEXP) {
+RcppExport SEXP _restoreutils_C_remap_values(SEXP dataSEXP, SEXP sourceSEXP, SEXP targetSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -25,7 +25,7 @@ END_RCPP
 }
 // C_trajectory_transition_analysis
 NumericMatrix C_trajectory_transition_analysis(NumericMatrix data, int reference_class, int neighbor_class);
-RcppExport SEXP _restoremasks_C_trajectory_transition_analysis(SEXP dataSEXP, SEXP reference_classSEXP, SEXP neighbor_classSEXP) {
+RcppExport SEXP _restoreutils_C_trajectory_transition_analysis(SEXP dataSEXP, SEXP reference_classSEXP, SEXP neighbor_classSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -38,7 +38,7 @@ END_RCPP
 }
 // C_trajectory_neighbor_analysis
 NumericMatrix C_trajectory_neighbor_analysis(NumericMatrix data, int reference_class, int replacement_class);
-RcppExport SEXP _restoremasks_C_trajectory_neighbor_analysis(SEXP dataSEXP, SEXP reference_classSEXP, SEXP replacement_classSEXP) {
+RcppExport SEXP _restoreutils_C_trajectory_neighbor_analysis(SEXP dataSEXP, SEXP reference_classSEXP, SEXP replacement_classSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -51,13 +51,13 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_restoremasks_C_remap_values", (DL_FUNC) &_restoremasks_C_remap_values, 3},
-    {"_restoremasks_C_trajectory_transition_analysis", (DL_FUNC) &_restoremasks_C_trajectory_transition_analysis, 3},
-    {"_restoremasks_C_trajectory_neighbor_analysis", (DL_FUNC) &_restoremasks_C_trajectory_neighbor_analysis, 3},
+    {"_restoreutils_C_remap_values", (DL_FUNC) &_restoreutils_C_remap_values, 3},
+    {"_restoreutils_C_trajectory_transition_analysis", (DL_FUNC) &_restoreutils_C_trajectory_transition_analysis, 3},
+    {"_restoreutils_C_trajectory_neighbor_analysis", (DL_FUNC) &_restoreutils_C_trajectory_neighbor_analysis, 3},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_restoremasks(DllInfo *dll) {
+RcppExport void R_init_restoreutils(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

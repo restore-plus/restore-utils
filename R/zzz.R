@@ -1,3 +1,3 @@
 #' @importFrom Rcpp sourceCpp
-#' @useDynLib restoremasks, .registration = TRUE
+#' @useDynLib restoreutils, .registration = TRUE
 NULL

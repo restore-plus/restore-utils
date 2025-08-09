@@ -2,14 +2,14 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 C_remap_values <- function(data, source, target) {
-    .Call(`_restoremasks_C_remap_values`, data, source, target)
+    .Call(`_restoreutils_C_remap_values`, data, source, target)
 }
 
 C_trajectory_transition_analysis <- function(data, reference_class, neighbor_class) {
-    .Call(`_restoremasks_C_trajectory_transition_analysis`, data, reference_class, neighbor_class)
+    .Call(`_restoreutils_C_trajectory_transition_analysis`, data, reference_class, neighbor_class)
 }
 
 C_trajectory_neighbor_analysis <- function(data, reference_class, replacement_class) {
-    .Call(`_restoremasks_C_trajectory_neighbor_analysis`, data, reference_class, replacement_class)
+    .Call(`_restoreutils_C_trajectory_neighbor_analysis`, data, reference_class, replacement_class)
 }
 

@@ -1,6 +1,6 @@
 .prodes_dir <- function(version, year) {
-    prodes_base_dir <- "data/raw/masks/prodes-mask-forest"
-    prodes_base_dir <- Sys.getenv("RESTORE_MASK_PRODES_BASE_DIR", prodes_base_dir)
+    prodes_base_dir <- "data/derived/masks/base/prodes"
+    prodes_base_dir <- .project_env_variable("MASK_PRODES_BASE_DIR", prodes_base_dir)
 
     fs::path(prodes_base_dir) / version / year
 }
