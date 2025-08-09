@@ -53,8 +53,6 @@ reclassify_rule3_pasture_wetland <- function(cube, mask, multicores, memsize, ou
     deforestation_years <- paste0("d", 2000:(rarg_year - 1))
     deforestation_years <- c(deforestation_years, residuals_years)
 
-    sits_labels()
-
     # build expression
     rules_expression <- bquote(
         list(
