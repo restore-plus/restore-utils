@@ -46,6 +46,13 @@ project_masks_dir <- function() {
 }
 
 #' @export
+project_samples_dir <- function() {
+    default_dir <- "data/derived/samples"
+
+    fs::path(.project_env_variable("SAMPLES_DIR", default_dir))
+}
+
+#' @export
 project_model_file <- function(version) {
     default_dir <- "data/derived/models"
 
