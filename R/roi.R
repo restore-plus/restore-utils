@@ -1,5 +1,5 @@
 .roi_ecoregion_data_file <- function() {
-    default_file <- "data/raw/region/amazon-regions-bdc-md.gpkg"
+    default_file <- system.file("extdata/amazon/amazon-regions-bdc-md.gpkg", package = "restoreutils")
 
     fs::path(Sys.getenv("RESTORE_PLUS_REG3_ROI_FILE", default_file))
 }
