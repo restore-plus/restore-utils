@@ -18,18 +18,28 @@
     # Transform / Filter region (region 3)
     eco_region <- sf::st_transform(eco_region, crs = crs)
     eco_region <- dplyr::filter(eco_region, layer == eco_name) |>
-        dplyr::select(-gid, -id, -grs_schema) |>
-        sf::st_union() |>
-        sf::st_convex_hull()
+        dplyr::select(-gid, -id, -grs_schema)
 }
 
 #' @export
-roi_ecoregions <- function(region_id, crs, as_file = FALSE) {
+roi_ecoregions <- function(region_id, crs, as_file = FALSE, as_union = FALSE, as_convex = FALSE) {
     # generate eco region geometry
     eco_region_geom <- .roi_ecoregion_sf(
         region_id = region_id,
         crs = crs
     )
+
+    # Union
+    if (as_union) {
+        eco_region_geom <- sf::st_union(eco_region_geom) |>
+                            sf::st_make_valid()
+    }
+
+    # Transform convex hull
+    if (as_convex) {
+        eco_region_geom <- sf::st_union(eco_region_geom) |>
+                            sf::st_convex_hull()
+    }
 
     if (as_file) {
         # Create temp file
