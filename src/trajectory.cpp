@@ -38,8 +38,8 @@ NumericMatrix C_trajectory_neighbor_analysis(NumericMatrix data, int reference_c
     int npixel = data.nrow();
     int nyear = data.ncol();
 
-    if (nyear != 10) {
-        stop("Expected exactly 10 years (columns), but got " + std::to_string(nyear));
+    if (nyear < 3) {
+        stop("Expected at least 3 years (columns), but got " + std::to_string(nyear));
     }
 
     for (int i = 0; i < npixel; i++) {
