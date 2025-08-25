@@ -10,6 +10,62 @@
 }
 
 #' @export
+prodes_generate_forest_mask <- function(target_year, version = "v2", multicores = 32, memsize = 120) {
+    if (target_year >= 2024) {
+        cli::cli_abort(
+            "Nothing to do: 2024 is the most recent year; the forest in this year represents the actual available forest"
+        )
+    }
+
+    # Define deforestation years (we move from the future to the past).
+    # The goal of this function is to "regenerate the forest area".
+    # The idea is as follows:
+    # If an area is known to be deforested in 2024, by definition, it was forest in 2023.
+    # Generalizing: if an area is deforested in year `t`, it was forest in year `t - 1`.
+    #
+    # Therefore, to generate PRODES with a forest mask, we proceed as follows:
+    # Example:
+    #   target year = 2016
+    #   deforestation years = 2024 – 2017
+    # All of these deforestation years correspond to forest in 2016.
+    deforestation_years <- paste0("d", (target_year + 1):2024)
+
+    # Load PRODES 2024 cube
+    # Why 2024 ? This is the current version of PRODES available. We always go
+    # from the latest PRODES year available.
+    prodes_cube <- load_prodes_2024(
+        version    = version,
+        multicores = multicores,
+        memsize    = memsize
+    )
+
+    # Define output dir
+    output_dir <- .prodes_dir(version = version, year = target_year)
+
+    # build expression
+    rules_expression <- bquote(
+        list(
+            "Vegetação Nativa" = cube == "Vegetação Nativa" |
+                                 cube %in% .(deforestation_years)
+        )
+    )
+
+    # reclassify!
+    eval(bquote(
+        sits_reclassify(
+            cube = cube,
+            mask = mask,
+            rules = .(rules_expression),
+            multicores = multicores,
+            memsize = memsize,
+            output_dir = output_dir,
+            version = "v1"
+        )
+    ))
+}
+
+
+#' @export
 load_prodes_2014 <- function(version = "v2", multicores = 32, memsize = 120) {
     prodes_dir <- .prodes_dir(version = version, year = 2014)
     prodes_rds <- .prodes_rds(prodes_dir)
