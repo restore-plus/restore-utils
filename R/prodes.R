@@ -42,6 +42,9 @@ prodes_generate_forest_mask <- function(target_year, version = "v2", multicores 
     # Define output dir
     output_dir <- .prodes_dir(version = version, year = target_year)
 
+    # Create output dir
+    fs::dir_create(output_dir)
+
     # build expression
     rules_expression <- bquote(
         list(
