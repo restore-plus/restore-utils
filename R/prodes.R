@@ -53,8 +53,8 @@ prodes_generate_forest_mask <- function(target_year, version = "v2", multicores 
     # reclassify!
     eval(bquote(
         sits_reclassify(
-            cube = cube,
-            mask = mask,
+            cube = prodes_cube,
+            mask = prodes_cube,
             rules = .(rules_expression),
             multicores = multicores,
             memsize = memsize,
