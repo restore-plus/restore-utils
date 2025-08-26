@@ -88,23 +88,26 @@ load_prodes_2000 <- function(version = "v2", multicores = 32, memsize = 120) {
                            "tile", "start_date", "end_date",
                            "band", "version"),
             bands = "class",
-            labels = c("0"  = "d2000",
-                       "50" = "r2010",
-                       "51" = "r2011",
-                       "52" = "r2012",
-                       "53" = "r2013",
-                       "54" = "r2014",
-                       "55" = "r2015",
-                       "56" = "r2016",
-                       "57" = "r2017",
-                       "58" = "r2018",
-                       "59" = "r2019",
-                       "60" = "r2020",
-                       "61" = "r2021",
-                       "62" = "r2022",
-                       "63" = "r2023",
-                       "64" = "r2024",
+            # We are using labels with `nuvem` while generating PRODES 2000
+            # using 2023 data. This is necessary because PRODES 2024 has a
+            # bug and does not provide `d2000` and others until `d2007`.
+            labels = c("0"   = "d2000",
+                       "50"  = "r2010",
+                       "51"  = "r2011",
+                       "52"  = "r2012",
+                       "53"  = "r2013",
+                       "54"  = "r2014",
+                       "55"  = "r2015",
+                       "56"  = "r2016",
+                       "57"  = "r2017",
+                       "58"  = "r2018",
+                       "59"  = "r2019",
+                       "60"  = "r2020",
+                       "61"  = "r2021",
+                       "62"  = "r2022",
+                       "63"  = "r2023",
                        "91"  = "Hidrografia",
+                       "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
@@ -135,10 +138,85 @@ load_prodes_2005 <- function(version = "v2", multicores = 32, memsize = 120) {
                            "tile", "start_date", "end_date",
                            "band", "version"),
             bands = "class",
+            # We are using labels with `nuvem` while generating PRODES 2005
+            # using 2023 data. This is necessary because PRODES 2024 has a
+            # bug and does not provide `d2000` and others until `d2007`.
             labels = c("0"   = "d2000",
                        "2"   = "d2002",
                        "4"   = "d2004",
+                       "50"  = "r2010",
+                       "51"  = "r2011",
+                       "52"  = "r2012",
+                       "53"  = "r2013",
+                       "54"  = "r2014",
+                       "55"  = "r2015",
+                       "56"  = "r2016",
+                       "57"  = "r2017",
+                       "58"  = "r2018",
+                       "59"  = "r2019",
+                       "60"  = "r2020",
+                       "61"  = "r2021",
+                       "62"  = "r2022",
+                       "63"  = "r2023",
                        "91"  = "Hidrografia",
+                       "99"  = "Nuvem",
+                       "100" = "Vegetação Nativa",
+                       "101" = "Não Floresta")
+        )
+
+        saveRDS(prodes, prodes_rds)
+    }
+    prodes
+}
+
+#' @export
+load_prodes_2010 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2010)
+    prodes_rds <- .prodes_rds(prodes_dir)
+
+    if (fs::file_exists(prodes_rds)) {
+
+        prodes <- readRDS(prodes_rds)
+
+    } else {
+        # Recover the PRODES classified cube
+        prodes <- sits_cube(
+            source = "MPC",
+            collection = "LANDSAT-C2-L2",
+            data_dir = prodes_dir,
+            multicores = multicores,
+            memsize = memsize,
+            parse_info = c("product", "sensor",
+                           "tile", "start_date", "end_date",
+                           "band", "version"),
+            bands = "class",
+            # We are using labels with `nuvem` while generating PRODES 2010
+            # using 2023 data. This is necessary because PRODES 2024 has a
+            # bug and does not provide `d2000` and others until `d2007`.
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "4"   = "d2004",
+                       "6"   = "d2006",
+                       "7"   = "d2007",
+                       "8"   = "d2008",
+                       "9"   = "d2009",
+                       "10"  = "d2010",
+                       "50"  = "r2010",
+                       "51"  = "r2011",
+                       "52"  = "r2012",
+                       "53"  = "r2013",
+                       "54"  = "r2014",
+                       "55"  = "r2015",
+                       "56"  = "r2016",
+                       "57"  = "r2017",
+                       "58"  = "r2018",
+                       "59"  = "r2019",
+                       "60"  = "r2020",
+                       "61"  = "r2021",
+                       "62"  = "r2022",
+                       "63"  = "r2023",
+                       "91"  = "Hidrografia",
+                       "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "Não Floresta")
         )
