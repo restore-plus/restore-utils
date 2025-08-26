@@ -69,7 +69,7 @@ prodes_generate_forest_mask <- function(target_year, version = "v2", multicores 
 
 #' @export
 load_prodes_2000 <- function(version = "v2", multicores = 32, memsize = 120) {
-    prodes_dir <- .prodes_dir(version = version, year = 2014)
+    prodes_dir <- .prodes_dir(version = version, year = 2000)
     prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
