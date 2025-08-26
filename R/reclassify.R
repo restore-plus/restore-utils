@@ -208,6 +208,24 @@ reclassify_rule11_water <- function(cube, mask, multicores, memsize, output_dir,
 }
 
 #' @export
+reclassify_rule11_water_prodes <- function(cube, mask, multicores, memsize, output_dir, version) {
+    sits_reclassify(
+        cube = cube,
+        mask = mask,
+        rules = list(
+            "agua" = (
+                mask == "Hidrografia" &
+                    !cube %in% c("Wetland_ICS", "Seasonally_Flooded_ICS")
+            )
+        ),
+        multicores = multicores,
+        memsize = memsize,
+        output_dir = output_dir,
+        version = version
+    )
+}
+
+#' @export
 reclassify_rule12_non_forest <- function(cube, mask, multicores, memsize, output_dir, version) {
     sits_reclassify(
         cube = cube,
