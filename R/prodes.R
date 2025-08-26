@@ -67,6 +67,37 @@ prodes_generate_forest_mask <- function(target_year, version = "v2", multicores 
     ))
 }
 
+#' @export
+load_prodes_2000 <- function(version = "v2", multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = 2014)
+    prodes_rds <- .prodes_rds(prodes_dir)
+
+    if (fs::file_exists(prodes_rds)) {
+
+        prodes <- readRDS(prodes_rds)
+
+    } else {
+        # Recover the PRODES classified cube
+        prodes <- sits_cube(
+            source = "MPC",
+            collection = "LANDSAT-C2-L2",
+            data_dir = prodes_dir,
+            multicores = multicores,
+            memsize = memsize,
+            parse_info = c("product", "sensor",
+                           "tile", "start_date", "end_date",
+                           "band", "version"),
+            bands = "class",
+            labels = c("0"   = "d2000",
+                       "91"  = "Hidrografia",
+                       "100" = "Vegetação Nativa",
+                       "101" = "Não Floresta")
+        )
+
+        saveRDS(prodes, prodes_rds)
+    }
+    prodes
+}
 
 #' @export
 load_prodes_2014 <- function(version = "v2", multicores = 32, memsize = 120) {
