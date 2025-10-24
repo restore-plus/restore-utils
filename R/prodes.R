@@ -89,7 +89,7 @@
     })
 }
 
-.prodes_nonforest_rasterize <- function(prodes, output_dir, class_id = 1) {
+.prodes_nonforest_rasterize <- function(prodes, year, output_dir, class_id = 1) {
     # Create output directory
     output_dir <- fs::path(output_dir)
     fs::dir_create(output_dir)
@@ -101,13 +101,13 @@
     prodes_valid <- sf::st_is_valid(prodes)
     prodes <- prodes[prodes_valid,]
 
-    file_output <- .prodes_nonforest_output_file(prodes, output_dir)
+    file_output <- .prodes_nonforest_output_file(prodes, year, output_dir)
 
     # Define file output metadata
     meta <- tibble::tibble(
         file       = file_output,
-        start_date = as.integer(start_date),
-        end_date   = as.integer(end_date),
+        start_date = 2000,
+        end_date   = year,
         class_id   = class_id
     )
 
@@ -268,6 +268,7 @@ prodes_generate_mask <- function(target_year,
             # Rasterize non-forest
             .prodes_nonforest_rasterize(
                 prodes        = prodes_nonforest,
+                year          = target_year,
                 output_dir    = output_dir_nonforest,
                 class_id      = 1 # as this is yearly - it is ok to keep 1
             )
