@@ -1,7 +1,7 @@
 
 .prodes_files <- function() {
     files <- c(
-        "https://terrabrasilis.dpi.inpe.br/download/dataset/legal-amz-prodes/raster/prodes_amazonia_legal_2024.zip",
+        "https://terrabrasilis.dpi.inpe.br/download/dataset/amz-prodes/raster/prodes_amazonia_2024.zip",
         "https://www.dropbox.com/scl/fi/w9982bmhln4oincvg3hej/prodes_amazonia_legal_2000.zip?rlkey=apjy1uyu3u8uyjyv5dd40la6q&dl=1",
         "https://www.dropbox.com/scl/fi/jz1vzmohcoqxlqmj8f9wi/prodes_amazonia_legal_2001.zip?rlkey=sx8yujl1f46a5q8jweyyx3qvk&dl=1",
         "https://www.dropbox.com/scl/fi/acn7n7aeoycxi3ljf4i2g/prodes_amazonia_legal_2002.zip?rlkey=zo16xu5s4tf90lldd8g2pckxu&dl=1",
