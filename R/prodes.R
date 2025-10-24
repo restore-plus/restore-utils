@@ -101,7 +101,7 @@
     prodes_valid <- sf::st_is_valid(prodes)
     prodes <- prodes[prodes_valid,]
 
-    file_output <- .prodes_nonforest_output_file(prodes, year, output_dir)
+    file_output <- .prodes_nonforest_output_file(year, output_dir)
 
     # Define file output metadata
     meta <- tibble::tibble(
