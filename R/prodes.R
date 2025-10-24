@@ -121,7 +121,7 @@
         dplyr::mutate(class = class_id)
 
     # Create temp file to save the current sf object
-    tmp_gpkg <- fs::file_temp(pattern = paste0("prodes-", start_date, "-", end_date), ext = ".gpkg")
+    tmp_gpkg <- fs::file_temp(pattern = paste0("prodes-", 2000, "-", year), ext = ".gpkg")
 
     # Write current sf object
     sf::st_write(prodes_3857, dsn = tmp_gpkg, layer = "year", quiet = TRUE)
