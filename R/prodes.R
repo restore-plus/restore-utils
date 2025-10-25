@@ -24,9 +24,9 @@
 
     # List of dataset URLs
     urls <- c(
-        yearly_deforestation_nf           = "https://www.dropbox.com/scl/fi/rspgr74pi5lj9lgcy626q/yearly_deforestation_nf_biome.zip?rlkey=hyjrcpi04v5030ilxb78rbtsr&st=f18v6qki&dl=1",
-        residual_biome                    = "https://www.dropbox.com/scl/fi/6mlxqqgc0kvns8bo738my/residual_biome.zip?rlkey=spfdn5qhtg9fe82kw59fun00q&st=n0d6qa9a&dl=1",
-        accumulated_deforestation_2000_nf = "https://www.dropbox.com/scl/fi/vu9iazykmegj545nrtvjr/accumulated_deforestation_2000_nf_biome.zip?rlkey=bg01nny9j4qlvhpy60m6omsvd&st=xozk6t3j&dl=1"
+        yearly_deforestation_nf           = "https://terrabrasilis.dpi.inpe.br/download/dataset/amz-prodes/vector/yearly_deforestation_nf_biome.zip",
+        residual_biome                    = "https://terrabrasilis.dpi.inpe.br/download/dataset/amz-prodes/vector/residual_nf_biome.zip",
+        accumulated_deforestation_2000_nf = "https://terrabrasilis.dpi.inpe.br/download/dataset/amz-prodes/vector/accumulated_deforestation_2000_nf_biome.zip"
     )
 
     # Iterate over URLs, download, unzip, and collect .shp
@@ -34,17 +34,23 @@
         # Subdirectory for this dataset
         dataset_dir <- fs::path(output_dir, name)
 
+        # XXX: Load parallel 44 data to filter geometries on it
+        parallel_44_geometry <- system.file("extdata/amazon/prodes-parallel-44.gpkg", package = "restoreutils")
+        parallel_44_geometry <- sf::st_read(parallel_44_geometry, quiet = TRUE)
+
         # If folder exists, skip download
         if (fs::dir_exists(dataset_dir)) {
-            result <- fs::dir_ls(dataset_dir, regexp = "\\.shp$", recurse = TRUE) |>
+            res <- fs::dir_ls(dataset_dir, regexp = "\\.shp$", recurse = TRUE) |>
                 sf::st_read(quiet = TRUE) |>
                 sf::st_make_valid() |>
                 dplyr::filter(!sf::st_is_empty(.data[["geometry"]])) |>
                 dplyr::mutate(year = as.numeric(stringr::str_replace_all(.data[["class_name"]], "[rd]", ""))) |>
                 dplyr::select(.data[["year"]])
 
+            contains <- sf::st_contains(parallel_44_geometry, res, prepared = TRUE)
+
             # Return existing result
-            return(result)
+            return(res[unlist(contains),])
         }
 
         # Temporary file for zip
@@ -69,17 +75,21 @@
             return(NULL)
         }
 
-        suppressWarnings(
+        res <- suppressWarnings(
             sf::st_read(shp_files, quiet = TRUE) |>
                 sf::st_make_valid() |>
                 dplyr::filter(!sf::st_is_empty(.data[["geometry"]])) |>
                 dplyr::mutate(year = as.numeric(stringr::str_replace_all(.data[["class_name"]], "[rd]", ""))) |>
                 dplyr::select(.data[["year"]])
         )
+
+        contains <- sf::st_contains(parallel_44_geometry, res, prepared = TRUE)
+
+        res[unlist(contains),]
     })
 }
 
-.prodes_nonforest_rasterize <- function(prodes, output_dir, class_id = 1) {
+.prodes_nonforest_rasterize <- function(prodes, year, output_dir, class_id = 1) {
     # Create output directory
     output_dir <- fs::path(output_dir)
     fs::dir_create(output_dir)
@@ -91,13 +101,13 @@
     prodes_valid <- sf::st_is_valid(prodes)
     prodes <- prodes[prodes_valid,]
 
-    file_output <- .prodes_nonforest_output_file(prodes, output_dir)
+    file_output <- .prodes_nonforest_output_file(year, output_dir)
 
     # Define file output metadata
     meta <- tibble::tibble(
         file       = file_output,
-        start_date = as.integer(start_date),
-        end_date   = as.integer(end_date),
+        start_date = 2000,
+        end_date   = year,
         class_id   = class_id
     )
 
@@ -111,7 +121,7 @@
         dplyr::mutate(class = class_id)
 
     # Create temp file to save the current sf object
-    tmp_gpkg <- fs::file_temp(pattern = paste0("prodes-", start_date, "-", end_date), ext = ".gpkg")
+    tmp_gpkg <- fs::file_temp(pattern = paste0("prodes-", 2000, "-", year), ext = ".gpkg")
 
     # Write current sf object
     sf::st_write(prodes_3857, dsn = tmp_gpkg, layer = "year", quiet = TRUE)
@@ -174,6 +184,10 @@ prodes_generate_mask <- function(target_year,
     #   deforestation years = 2024 – 2017
     # All of these deforestation years correspond to forest in 2016.
     deforestation_years <- paste0("d", (target_year + 1):2024)
+
+    if (target_year == 2000) {
+        deforestation_years <- paste0("d", target_year:2024)
+    }
 
     # Define PRODES loader
     if (is.null(prodes_loader)) {
@@ -254,6 +268,7 @@ prodes_generate_mask <- function(target_year,
             # Rasterize non-forest
             .prodes_nonforest_rasterize(
                 prodes        = prodes_nonforest,
+                year          = target_year,
                 output_dir    = output_dir_nonforest,
                 class_id      = 1 # as this is yearly - it is ok to keep 1
             )
