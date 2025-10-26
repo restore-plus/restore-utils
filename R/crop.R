@@ -20,18 +20,13 @@ classification_crop <- function(year, roi_file, multicores, memsize, output_dir,
         load_fn <- load_restore_map_glad
     }
 
-    # Define data cube
-    class <- load_fn(
-        data_dir   = classification_dir,
-        multicores = multicores,
-        memsize    = memsize,
-        version    = version,
-        tiles      = "MOSAIC"
-    )
-
     # Define output file name
-    in_file  <- class[["file_info"]][[1]][["path"]]
+    in_file  <- fs::dir_ls(classification_dir, regexp = "MOSAIC")
     out_file <- output_dir / fs::path_file(in_file)
+
+    if (fs::file_exists(out_file)) {
+        return(out_file)
+    }
 
     # Crop gdal
     sits:::.gdal_crop_image(
