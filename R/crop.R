@@ -46,7 +46,7 @@ classification_crop <- function(year, roi_file, multicores, memsize, output_dir,
 #' @export
 terraclass_crop <- function(year, roi_file, multicores, memsize, output_dir) {
     # Stop if the year not in terraclass maps
-    stopifnot(year %in% c(2008, 2010, 2012, 2014, 2018, 2020, 2022))
+    stopifnot(year %in% c(2004, 2008, 2010, 2012, 2014, 2018, 2020, 2022))
 
     # Define output directory
     output_dir <- fs::path(output_dir)
