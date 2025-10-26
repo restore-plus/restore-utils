@@ -39,6 +39,13 @@ project_classifications_dir <- function() {
 }
 
 #' @export
+project_parallel44_classifications_dir <- function() {
+    default_dir <- "data/derived/parallel-44-class"
+
+    fs::path(.project_env_variable("CLASSIFICATION_PARALLEL44_DIR", default_dir))
+}
+
+#' @export
 project_masks_dir <- function() {
     default_dir <- "data/derived/masks"
 
