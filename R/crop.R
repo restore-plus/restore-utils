@@ -4,7 +4,7 @@ classification_crop <- function(year, roi_file, multicores, memsize, output_dir,
     output_dir <- fs::path(output_dir)
 
     # Create output directory
-    fs::create_dir(output_dir)
+    fs::dir_create(output_dir)
 
     # Base classification dir
     base_classifications_dir <- project_classifications_dir()
@@ -57,7 +57,7 @@ terraclass_crop <- function(year, roi_file, multicores, memsize, output_dir) {
     output_dir <- fs::path(output_dir)
 
     # Create output directory
-    fs::create_dir(output_dir)
+    fs::dir_create(output_dir)
 
     # Define loader function
     tc_loader <- get(paste0("load_terraclass_", year))
