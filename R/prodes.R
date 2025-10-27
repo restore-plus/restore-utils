@@ -94,7 +94,7 @@
     })
 }
 
-.prodes_nonforest_download <- function(output_dir) {
+.prodes_nonforest_p44_download <- function(output_dir) {
     # Ensure output directory exists
     fs::dir_create(output_dir)
 
