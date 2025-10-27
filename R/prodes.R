@@ -18,6 +18,11 @@
     fs::path(output_dir, file_output)
 }
 
+.prodes_nonforest_p44_output_file <- function(output_dir) {
+    file_name <- "LANDSAT_TM-ETM-OLI_MOSAIC_2000-01-01_2024-12-31_class_v1.tif"
+    fs::path(output_dir, file_name)
+}
+
 .prodes_nonforest_download <- function(output_dir) {
     # Ensure output directory exists
     fs::dir_create(output_dir)
@@ -87,6 +92,19 @@
 
         res[unlist(contains),]
     })
+}
+
+.prodes_nonforest_download <- function(output_dir) {
+    # Ensure output directory exists
+    fs::dir_create(output_dir)
+
+    # Dataset URL
+    non_forest = "https://www.dropbox.com/scl/fi/p9t5pvuv7mnxwymo7ieii/LANDSAT_TM-ETM-OLI_MOSAIC_2000-01-01_2024-12-31_class_v1.tif?rlkey=zvgvrpg5mibbj3kbbdiq6o929&st=wygy6ks4&dl=1"
+    # File name
+    file_name <- .prodes_nonforest_p44_output_file(output_dir)
+
+    # Download
+    download.file(non_forest, file_name, mode = "wb")
 }
 
 .prodes_nonforest_rasterize <- function(prodes, year, output_dir, class_id = 1) {
@@ -162,6 +180,7 @@ prodes_generate_mask <- function(target_year,
                                  prodes_loader = NULL,
                                  exclude_mask_na = FALSE,
                                  nonforest_mask = FALSE,
+                                 update_nonforest = FALSE,
                                  allow_forest_only = FALSE) {
 
     cli::cli_inform("> Processing {target_year}")
@@ -236,6 +255,77 @@ prodes_generate_mask <- function(target_year,
     } else {
         # If it is target_year <= 2007, use original PRODES cube
         prodes_forest_mask <- prodes_cube
+    }
+
+    if (update_nonforest) {
+        cli::cli_inform("> Processing {target_year} > Updating non-forest")
+        # Define output directory
+        output_dir_nonforest <- output_dir / "non-forest" / target_year / "parallel-44"
+
+        # Create output directory
+        fs::dir_create(output_dir_nonforest)
+
+        # Check non-forest file
+        nonforest_file <- .prodes_nonforest_p44_output_file(
+            output_dir = output_dir_nonforest
+        )
+
+        if (!fs::file_exists(nonforest_file)) {
+            # Download non-forest data
+            prodes_nonforest <- .prodes_nonforest_p44_download(output_dir_nonforest)
+        }
+
+        # Load non-forest as cube
+        prodes_nonforest <- sits::sits_cube(
+            source     = "MPC",
+            collection = "LANDSAT-C2-L2",
+            bands      = "class",
+            tiles      = "MOSAIC",
+            multicores = multicores,
+            memsize    = memsize,
+            data_dir   = output_dir_nonforest,
+            labels     = c(
+                "0"   = "NonForest",
+                "255" = "NoData"
+            )
+        )
+
+        # Build expression
+        rules_expression <- bquote(
+            list("NAO FLORESTA" = mask == "NonForest")
+        )
+
+        # Apply deforestation in non-forest areas
+        prodes_forest_mask_new <- eval(bquote(
+            sits::sits_reclassify(
+                cube       = prodes_forest_mask,
+                mask       = prodes_nonforest,
+                rules      = .(rules_expression),
+                multicores = multicores,
+                memsize    = memsize,
+                output_dir = output_dir,
+                exclude_mask_na = exclude_mask_na,
+                version    = "nonforest-mask"
+            )
+        ))
+
+        # Get files
+        file_new <- prodes_forest_mask_new[["file_info"]][[1]][["path"]]
+        file_old <- prodes_forest_mask[["file_info"]][[1]][["path"]]
+
+        # Move files
+        fs::file_move(
+            path     = file_new,
+            new_path = file_old
+        )
+
+        # Update cube
+        prodes_forest_mask_new[["file_info"]][[1]][["path"]] <- file_old
+
+        # Replace old mask with the new one
+        prodes_forest_mask <- prodes_forest_mask_new
+
+        cli::cli_inform("> Processing {target_year} > Finalized update non-forest mask")
     }
 
     # If required, mask non-forest
