@@ -445,7 +445,8 @@ load_prodes_2000 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2000
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -464,8 +465,7 @@ load_prodes_2000 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "Aggregation",
-                       "103" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -498,7 +498,9 @@ load_prodes_2001 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2000
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -517,9 +519,7 @@ load_prodes_2001 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2000",
-                       "103" = "d2001",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -552,7 +552,9 @@ load_prodes_2002 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2000
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -571,9 +573,7 @@ load_prodes_2002 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2001",
-                       "103" = "d2002",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -606,7 +606,10 @@ load_prodes_2003 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2000
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "4"   = "d2004",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -625,9 +628,7 @@ load_prodes_2003 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2002",
-                       "103" = "d2003",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -660,7 +661,10 @@ load_prodes_2004 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2000
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "4"   = "d2004",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -679,9 +683,7 @@ load_prodes_2004 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2003",
-                       "103" = "d2004",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -714,7 +716,11 @@ load_prodes_2005 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2005
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "4"   = "d2004",
+                       "6"   = "d2006",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -733,9 +739,7 @@ load_prodes_2005 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2004",
-                       "103" = "d2005",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -768,7 +772,11 @@ load_prodes_2006 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2005
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "4"   = "d2004",
+                       "6"   = "d2006",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -787,9 +795,7 @@ load_prodes_2006 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2005",
-                       "103" = "d2006",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
@@ -822,7 +828,12 @@ load_prodes_2007 <- function(version = "v2", multicores = 32, memsize = 120) {
             # We are using labels with `nuvem` while generating PRODES 2005
             # using 2023 data. This is necessary because PRODES 2024 has a
             # bug and does not provide `d2000` and others until `d2007`.
-            labels = c("50"  = "r2010",
+            labels = c("0"   = "d2000",
+                       "2"   = "d2002",
+                       "4"   = "d2004",
+                       "6"   = "d2006",
+                       "7"   = "d2007",
+                       "50"  = "r2010",
                        "51"  = "r2011",
                        "52"  = "r2012",
                        "53"  = "r2013",
@@ -841,9 +852,7 @@ load_prodes_2007 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "99"  = "Nuvem",
                        "100" = "Vegetação Nativa",
                        "101" = "NAO FLORESTA",
-                       "102" = "d2006",
-                       "103" = "d2007",
-                       "104" = "DeforestationInNonForest"
+                       "102" = "DeforestationInNonForest"
             )
         )
 
