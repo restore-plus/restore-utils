@@ -23,8 +23,26 @@
     return(cube_labels_remap)
 }
 
+#' @title Remap cube labels
+#'
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#'
+#' @description Remaps the labels of a cube.
+#'
+#' @param cube          A \code{sits} cube.
+#' @param output_dir    Character specifying the output directory.
+#' @param multicores    Integer specifying the number of cores for parallel
+#'                      processing (default: 10).
+#' @param memsize       Integer specifying the memory size for parallel
+#'                      processing (default: 16).
+#' @param mapping_reference  A mapping reference object.
+#' @param rules         A rules object.
+#'
+#' @returns A \code{sits} cube with the remapped labels.
+#'
 #' @export
-cube_remap <- function(cube, output_dir, multicores, memsize, mapping_reference, rules = NULL) {
+cube_remap <- function(cube, output_dir, multicores = 10, memsize = 16, mapping_reference, rules = NULL) {
     # Define output dir
     output_dir <- fs::path(output_dir)
 

@@ -21,11 +21,14 @@ Imports:
     cli,
     dplyr (>= 1.1.0),
     fs,
+    ggplot2,
+    ggalluvial,
     gdalraster,
     gdalUtilities,
     ntfy,
     openxlsx,
     Rcpp (>= 1.1.0),
+    rgrass,
     sf (>= 1.0-19),
     sits (>= 1.5.2),
     stringr,
@@ -34,3 +37,44 @@ Imports:
     xml2
 LinkingTo:
     Rcpp
+Collate:
+    'aws.R'
+    'cran_utils.R'
+    'crop_utils.R'
+    'crs.R'
+    'cubes.R'
+    'curl_utils.R'
+    'files.R'
+    'flux.R'
+    'gdal_merge_aws.R'
+    'gdal_rasterize.R'
+    'gdal_rat.R'
+    'geometry_utils.R'
+    'grass_utils.R'
+    'mosaic.R'
+    'na_utils.R'
+    'notify_utils.R'
+    'prodes.R'
+    'prodes_download.R'
+    'project.R'
+    'qml_utils.R'
+    'RcppExports.R'
+    'reclassify_amazon.R'
+    'reclassify_cerrado.R'
+    'reclassify_mask.R'
+    'reclassify_utils.R'
+    'remap.R'
+    'remap_amazon.R'
+    'restore.R'
+    'restore_colors.R'
+    'restore_labels.R'
+    'roi_amazon.R'
+    'roi_cerrado.R'
+    'sankey_utils.R'
+    'terraclass.R'
+    'terraclass_download.R'
+    'val_crosstable.R'
+    'val_versions.R'
+    'vegetation_map.R'
+    'water_mask.R'
+    'zzz.R'

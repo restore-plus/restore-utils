@@ -1,3 +1,34 @@
+#' @title Load Restore Mosaic
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Loads a restore mosaic from a data directory.
+#' 
+#' @param data_dir The data directory.
+#' @param multicores The number of cores to use.
+#' @param memsize The memory size to use.
+#' @param labels The labels to use. Default is NULL.
+#' @param ... Additional arguments to pass to the sits_cube function.
+#' 
+#' @returns A sits cube.
+#' 
+#' @export
+load_restore_mosaic <- function(data_dir, multicores = 32, memsize = 120, labels, ...) {
+    sits::sits_cube(
+        source = "BDC",
+        collection = "LANDSAT-OLI-16D",
+        data_dir = data_dir,
+        memsize = memsize,
+        multicores = multicores,
+        parse_info = c("satellite", "sensor",
+                       "tile", "start_date", "end_date",
+                       "band", "version"),
+        bands = "class",
+        labels = labels,
+        ...
+    )
+}
 
 #' @export
 load_restore_map_bdc <- function(data_dir, multicores = 32, memsize = 120, labels = NULL, ...) {
@@ -126,43 +157,6 @@ get_restore_rds_files <- function(mask_version) {
     files <- do.call(rbind, files_lst)
 
     return(files)
-}
-
-#' @export
-load_cerrado_map <- function(data_dir, multicores = 32, memsize = 120, labels = NULL, ...) {
-    # Default classification label - based on classification results
-    default_labels <- c(
-        "1" = "Agricultura anual",
-        "2" = "Campo Natural",
-        "3" = "Água",
-        "4" = "Floresta",
-        "5" = "Formações Arenosas",
-        "6" = "Pasture",
-        "7" = "Perennial_Crop",
-        "8" = "Silviculture",
-        "9" = "Sugarcane",
-        "10" = "Vegetação Natural"
-    )
-
-    if (is.null(labels)) {
-        labels = default_labels
-    }
-
-    cube <- sits::sits_cube(
-        source = "BDC",
-        collection = "LANDSAT-OLI-16D",
-        data_dir = data_dir,
-        memsize = memsize,
-        multicores = multicores,
-        parse_info = c("satellite", "sensor",
-                       "tile", "start_date", "end_date",
-                       "band", "version"),
-        bands = "class",
-        labels = labels,
-        ...
-    )
-
-    return(cube)
 }
 
 #' @export

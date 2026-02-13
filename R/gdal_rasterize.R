@@ -115,7 +115,7 @@ gdal_rasterize_segments <- function(file, res, output_dir, style = NULL,
             "ZSTD_LEVEL=1",
             "BIGTIFF=YES"
         ),
-        a_srs          = restoreutils::crs_bdc()
+        a_srs          = crs_bdc()
     )
 
     # Merge user config with defaults (user config takes precedence)

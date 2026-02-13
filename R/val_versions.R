@@ -1,14 +1,26 @@
-
+#' @title Compare versions of a classification cube
+#'
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#'
+#' @description Compares the versions of a classification cube.
+#'
+#' @param file          Character path for the classification cube file.
+#' @param file_mask     Character path for the mask cube file.
+#' @param year          Integer specifying the year to compare.
+#' @param target_class_id Integer specifying the target class ID.
+#' @param target_class_id_mask Integer specifying the target class ID of the mask.
+#' @param version         Character specifying the version to compare.
+#' @param multicores      Integer specifying the number of cores for parallel
+#'                        processing (default: 10).
+#' @param memsize         Integer specifying the memory size for parallel
+#'                        processing (default: 16).
+#' @param output_dir      Character path for the output directory.
+#'
+#' @returns A character specifying the output file.
+#' 
 #' @export
-validation_compare_versions <- function(file,
-                                        file_mask,
-                                        year,
-                                        target_class_id,
-                                        target_class_id_mask,
-                                        version,
-                                        multicores,
-                                        memsize,
-                                        output_dir) {
+validation_compare_versions <- function(file, file_mask, year, target_class_id, target_class_id_mask, version, multicores = 10, memsize = 16, output_dir) {
     # Create output directory
     output_dir <- fs::path(output_dir)
     fs::dir_create(output_dir)
@@ -155,4 +167,3 @@ validation_compare_versions <- function(file,
     # Return!
     return(file_out)
 }
-

@@ -1,4 +1,21 @@
-
+#' @title Adjust map geometry variations
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Adjusts the geometry variations of a map using a reference map.
+#' 
+#' @param file_adjust Character representing the file to adjust.
+#' @param file_reference Character representing the reference file.
+#' @param year Integer representing the year of the map.
+#' @param version Character representing the version of the map.
+#' @param multicores Integer representing the number of cores to use.
+#' @param memsize Integer representing the memory size to use.
+#' @param output_dir Character representing the output directory.
+#' 
+#' @returns Character representing the adjusted map.
+#'
+#' @keywords internal
 #' @export
 geom_adjust_map_variations <- function(file_adjust,
                                        file_reference,
