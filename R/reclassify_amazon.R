@@ -1726,11 +1726,107 @@ reclassify_rule31_cropand_pasture <- function(files,
 #' @export
 reclassify_rule32_deforestation_consistency <- function(files,
                                                         deforestation_id,
-                                                        target_class,
+                                                        target_id,
                                                         version,
                                                         multicores,
                                                         memsize,
                                                         output_dir) {
+    # // > "Se temos desmatamento no ano x, todos os anos 1:x-1 deverao ser floresta"
+    .reclassify_temporal_consistency_reference(
+        files = files,
+        reference_id = deforestation_id,
+        target_id = target_id,
+        version = version,
+        multicores = multicores,
+        memsize = memsize,
+        output_dir = output_dir
+    )
+}
+
+#' @export
+reclassify_rule33_forest_consistency <- function(files,
+                                                 forest_id,
+                                                 version,
+                                                 multicores,
+                                                 memsize,
+                                                 output_dir) {
+    # // > "Se temos floresta no ano x, todos os anos 1:x-1 deverao ser floresta"
+    .reclassify_temporal_consistency_reference(
+        files        = files,
+        reference_id = forest_id,
+        target_id    = forest_id,
+        version      = version,
+        multicores   = multicores,
+        memsize      = memsize,
+        output_dir   = output_dir
+    )
+}
+
+#' @export
+reclassify_rule34_cropland_consistency_tc <- function(cube,
+                                                      mask,
+                                                      roi,
+                                                      multicores,
+                                                      memsize,
+                                                      output_dir,
+                                                      version,
+                                                      rarg_year,
+                                                      exclude_mask_na = FALSE) {
+    # build args for expression
+    terraclass_years <- c(2016, 2018, 2020, 2022)
+
+    stopifnot(all(sits::sits_labels(cube) %in% labels_amazon_mcti()))
+
+    if (!rarg_year %in% terraclass_years) {
+        rules_expression <- bquote(
+            list(
+                "Pastagem" = (
+                    cube == "Agricultura anual" & (
+                        mask == "PASTAGEM ARBUSTIVA/ARBOREA" |
+                        mask == "PASTAGEM HERBACEA"
+                    )
+                ),
+                "Vegetação secundária" = (
+                    cube == "Agricultura anual" &
+                        mask == "VEGETACAO NATURAL FLORESTAL SECUNDARIA"
+                ),
+                "Silvicultura" = (
+                    cube == "Agricultura anual" & mask == "SILVICULTURA"
+                ),
+                "Agricultura semi-perene" = (
+                    cube == "Agricultura anual" & mask == "CULTURA AGRICOLA SEMIPERENE"
+                )
+            )
+        )
+    }
+
+    # reclassify!
+    cube <- eval(bquote(
+        sits::sits_reclassify(
+            cube = cube,
+            mask = mask,
+            rules = .(rules_expression),
+            exclude_mask_na = exclude_mask_na,
+            roi = roi,
+            multicores = multicores,
+            memsize = memsize,
+            output_dir = output_dir,
+            version = version
+        )
+    ))
+
+    .reclassify_save_rds(cube, output_dir, version)
+}
+
+#' @export
+reclassify_rule35_cropland_transitions <- function(files,
+                                                   source_classes,
+                                                   cropland_id,
+                                                   pasture_id,
+                                                   version,
+                                                   multicores,
+                                                   memsize,
+                                                   output_dir) {
     # Create output directory
     output_dir <- fs::path(output_dir)
     fs::dir_create(output_dir)
@@ -1783,8 +1879,9 @@ reclassify_rule32_deforestation_consistency <- function(files,
     # Update chunk to save extra information
     chunks[["files"]] <- rep(list(files), nrow(chunks))
     chunks[["out_filename"]] <- out_filename
-    chunks[["deforestation_id"]] <- deforestation_id
-    chunks[["target_class"]] <- target_class
+    chunks[["source_classes"]] <- source_classes
+    chunks[["cropland_id"]] <- cropland_id
+    chunks[["pasture_id"]] <- pasture_id
     # Start workers
     sits:::.parallel_start(workers = multicores)
     on.exit(sits:::.parallel_stop(), add = TRUE)
@@ -1795,8 +1892,9 @@ reclassify_rule32_deforestation_consistency <- function(files,
         # Get extra context defined by restoreutils
         files <- chunk[["files"]][[1]]
         out_filename <- chunk[["out_filename"]]
-        target_class <- chunk[["target_class"]][[1]]
-        deforestation_id <- chunk[["deforestation_id"]]
+        source_classes <- chunk[["source_classes"]]
+        cropland_id <- chunk[["cropland_id"]]
+        pasture_id <- chunk[["pasture_id"]]
         # Define block file name / path
         block_file <- sits:::.file_block_name(
             pattern = tools::file_path_sans_ext(out_filename),
@@ -1810,11 +1908,12 @@ reclassify_rule32_deforestation_consistency <- function(files,
         # Read raster values
         values <- sits:::.raster_read_rast(files = files, block = block)
         # // This rule was originally implemented to:
-        # // > "Se temos desmatamento no ano x, todos os anos 1:x-1 deverao ser floresta"
-        values <- restoreutils:::C_trajectory_deforestation_consistency(
+        # // > "Se temos pastagem agricultura e desmatamento, ag anual (2ciclos), qualquer pastagem agricultura e desmatamento, o valor do meio (ag anual), vira pastagem"
+        values <- restoreutils:::C_trajectory_cropland_transitions(
             data = values,
-            reference_class = deforestation_id,
-            target_class = target_class
+            source_classes = source_classes,
+            cropland_id = cropland_id,
+            pasture_id = pasture_id
         )
         # Prepare and save results as raster
         sits:::.raster_write_block(

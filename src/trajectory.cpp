@@ -240,7 +240,44 @@ NumericMatrix C_trajectory_neighbor_majority_analysis_target(NumericMatrix data,
 }
 
 // [[Rcpp::export]]
-NumericMatrix C_trajectory_deforestation_consistency(NumericMatrix data, int reference_class, int target_class) {
+NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVector source_classes, int cropland_id, int pasture_id) {
+    // This rule was originally implemented to:
+    // > "Se temos pastagem agricultura e desmatamento, ag anual (2ciclos), qualquer pastagem agricultura e desmatamento, o valor do meio (ag anual), vira pastagem"
+
+    int npixel = data.nrow();
+    int nyear = data.ncol();
+
+    if (nyear < 3) {
+        stop("Expected at least 3 years (columns), but got " + std::to_string(nyear));
+    }
+
+    for (int i = 0; i < npixel; i++) {
+        // remove edges (start: j = 1; end = j - 1)
+        for (int j = 1; j < nyear - 1; j++) {
+            // Get left and right values from previous and next years
+            int left_value = static_cast<int>(data(i, j - 1));
+            int middle_value = static_cast<int>(data(i, j));
+            int right_value = static_cast<int>(data(i, j + 1));
+
+            // Are left and right values valid?
+            bool is_left_valid = std::find(source_classes.begin(), source_classes.end(), left_value) == source_classes.end();
+            bool is_middle_valid = middle_value == cropland_id;
+            bool is_right_valid = right_value == pasture_id;
+
+            // Define auxiliary variables
+            bool is_left_equal_to_right = is_left_valid && is_right_valid;
+
+            if (is_left_equal_to_right && is_middle_valid) {
+                data(i, j) = pasture_id;
+            }
+        }
+    }
+
+    return data;
+}
+
+// [[Rcpp::export]]
+NumericMatrix C_trajectory_temporal_consistency_reference(NumericMatrix data, int reference_class, int target_class) {
     // This rule was originally implemented to:
     // > "Se temos desmatamento no ano x, todos os anos 1:x-1 deverao ser floresta"
 
@@ -252,7 +289,7 @@ NumericMatrix C_trajectory_deforestation_consistency(NumericMatrix data, int ref
     }
 
     for (int i = 0; i < npixel; i++) {
-        // remove edges (start: j = 1; end = j - 1)
+        // Remove edges (start: j = 1; end = j - 1)
         for (int j = 0; j < nyear; j++) {
             // If the current year is `reference_class`, apply consistency rule
             if (static_cast<int>(data(i, j)) == reference_class) {
@@ -263,7 +300,6 @@ NumericMatrix C_trajectory_deforestation_consistency(NumericMatrix data, int ref
             }
         }
     }
-
     return data;
 }
 
