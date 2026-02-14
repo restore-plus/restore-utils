@@ -1,4 +1,21 @@
-
+#' @title Replace NA values by a value in a raster file
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Replaces NA values by a value in a raster file.
+#' 
+#' @param file Character representing the input raster file.
+#' @param year Integer representing the year of the raster file.
+#' @param replace_value Integer representing the value to replace NA values.
+#' @param version Character representing the version of the raster file.
+#' @param multicores Integer representing the number of cores to use.
+#' @param memsize Integer representing the memory size to use.
+#' @param output_dir Character representing the output directory.
+#' 
+#' @returns Character representing the output raster file.
+#' 
+#' @keywords internal
 #' @export
 replace_na <- function(file, year, replace_value, version, multicores, memsize, output_dir) {
     # Create output directory
@@ -109,6 +126,25 @@ replace_na <- function(file, year, replace_value, version, multicores, memsize, 
     return(out_file)
 }
 
+#' @title Clean NA values in a cube
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Cleans NA values in a cube.
+#' 
+#' @param cube A \code{sits} cube.
+#' @param window_size Integer representing the window size.
+#' @param memsize Integer representing the memory size.
+#' @param multicores Integer representing the number of cores to use.
+#' @param output_dir Character representing the output directory.
+#' @param version Character representing the version of the cube.
+#' @param roi A \code{sits} ROI.
+#' @param progress Logical representing whether to show progress.
+#' 
+#' @returns A \code{sits} cube with the cleaned NA values.
+#' 
+#' @keywords internal
 #' @export
 na_cleaner <- function(cube,
                        window_size = 3L,
@@ -171,9 +207,29 @@ na_cleaner <- function(cube,
     })
     # Update cube class and return
     sits:::.set_class(clean_cube, "class_cube", class(clean_cube))
-
 }
 
+#' @title Clean NA values in a tile
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Cleans NA values in a tile.
+#' 
+#' @param tile A \code{sits} tile.
+#' @param block A \code{sits} block.
+#' @param band Character representing the band to clean.
+#' @param roi A \code{sits} ROI.
+#' @param window_size Integer representing the window size.
+#' @param overlap Integer representing the overlap.
+#' @param output_dir Character representing the output directory.
+#' @param version Character representing the version of the tile.
+#' @param progress Logical representing whether to show progress.
+#' 
+#' @returns A \code{sits} tile with the cleaned NA values.
+#' 
+#' @keywords internal
+#' @export
 .na_cleaner <- function(tile,
                         block,
                         band,
@@ -273,6 +329,26 @@ na_cleaner <- function(cube,
     )
 }
 
+#' @title Clean contextual NA values in a cube
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Cleans contextual NA values in a cube.
+#' 
+#' @param cube A \code{sits} cube.
+#' @param window_size Integer representing the window size.
+#' @param target_class Integer representing the target class.
+#' @param mode_class Integer representing the mode class.
+#' @param memsize Integer representing the memory size.
+#' @param multicores Integer representing the number of cores to use.
+#' @param output_dir Character representing the output directory.
+#' @param version Character representing the version of the cube.
+#' @param progress Logical representing whether to show progress.
+#' 
+#' @returns A \code{sits} cube with the cleaned contextual NA values.
+#' 
+#' @keywords internal
 #' @export
 contextual_cleaner <- function(cube,
                                window_size = 3L,
@@ -297,7 +373,6 @@ contextual_cleaner <- function(cube,
         npaths = 1L, nbytes = 8L,
         proc_bloat = sits:::.conf("processing_bloat")
     )
-
     # Get input band
     band <- sits:::.cube_bands(cube)
     # Update multicores parameter
@@ -338,6 +413,29 @@ contextual_cleaner <- function(cube,
     sits:::.set_class(clean_cube, "class_cube", class(clean_cube))
 }
 
+#' @title Clean contextual NA values in a tile
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Cleans contextual NA values in a tile.
+#' 
+#' @param tile A \code{sits} tile.
+#' @param block A \code{sits} block.
+#' @param band Character representing the band to clean.
+#' @param window_size Integer representing the window size.
+#' @param target_class Integer representing the target class.
+#' @param mode_class Integer representing the mode class.
+#' @param overlap Integer representing the overlap.
+#' @param output_dir Character representing the output directory.
+#' @param version Character representing the version of the tile.
+#' @param progress Logical representing whether to show progress.
+#' 
+#' @returns A \code{sits} tile with the cleaned contextual NA values.
+#' 
+#' @keywords internal
+#' @export
+#' @param tile A \code{sits} tile.
 .contextual_cleaner_tile <- function(tile,
                                      block,
                                      band,
@@ -424,6 +522,22 @@ contextual_cleaner <- function(cube,
     )
 }
 
+#' @title Detect chunks with NA values
+#' 
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' 
+#' @description Detects chunks with NA values.
+#' 
+#' @param files Character representing the input raster files.
+#' @param version Character representing the version of the files.
+#' @param multicores Integer representing the number of cores to use.
+#' @param memsize Integer representing the memory size.
+#' @param output_dir Character representing the output directory.
+#' 
+#' @returns Character representing the output raster file.
+#' 
+#' @keywords internal
 #' @export
 detect_chunks_with_na <- function(files, version, multicores, memsize, output_dir) {
     # Create output directory

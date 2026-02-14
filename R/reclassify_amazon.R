@@ -1777,7 +1777,7 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
 
     stopifnot(all(sits::sits_labels(cube) %in% labels_amazon_mcti()))
 
-    if (!rarg_year %in% terraclass_years) {
+    if (rarg_year %in% terraclass_years) {
         rules_expression <- bquote(
             list(
                 "Pastagem" = (
@@ -1798,22 +1798,22 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
                 )
             )
         )
-    }
 
-    # reclassify!
-    cube <- eval(bquote(
-        sits::sits_reclassify(
-            cube = cube,
-            mask = mask,
-            rules = .(rules_expression),
-            exclude_mask_na = exclude_mask_na,
-            roi = roi,
-            multicores = multicores,
-            memsize = memsize,
-            output_dir = output_dir,
-            version = version
-        )
-    ))
+        # reclassify!
+        cube <- eval(bquote(
+            sits::sits_reclassify(
+                cube = cube,
+                mask = mask,
+                rules = .(rules_expression),
+                exclude_mask_na = exclude_mask_na,
+                roi = roi,
+                multicores = multicores,
+                memsize = memsize,
+                output_dir = output_dir,
+                version = version
+            )
+        ))
+    }
 
     .reclassify_save_rds(cube, output_dir, version)
 }
