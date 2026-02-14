@@ -1879,7 +1879,7 @@ reclassify_rule35_cropland_transitions <- function(files,
     # Update chunk to save extra information
     chunks[["files"]] <- rep(list(files), nrow(chunks))
     chunks[["out_filename"]] <- out_filename
-    chunks[["source_classes"]] <- source_classes
+    chunks[["source_classes"]] <- rep(list(source_classes), nrow(chunks))
     chunks[["cropland_id"]] <- cropland_id
     chunks[["pasture_id"]] <- pasture_id
     # Start workers
@@ -1892,7 +1892,7 @@ reclassify_rule35_cropland_transitions <- function(files,
         # Get extra context defined by restoreutils
         files <- chunk[["files"]][[1]]
         out_filename <- chunk[["out_filename"]]
-        source_classes <- chunk[["source_classes"]]
+        source_classes <- chunk[["source_classes"]][[1]]
         cropland_id <- chunk[["cropland_id"]]
         pasture_id <- chunk[["pasture_id"]]
         # Define block file name / path
