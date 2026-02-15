@@ -160,19 +160,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// C_trajectory_temporal_consistency_reference
-NumericMatrix C_trajectory_temporal_consistency_reference(NumericMatrix data, int reference_class, int target_class);
-RcppExport SEXP _restoreutils_C_trajectory_temporal_consistency_reference(SEXP dataSEXP, SEXP reference_classSEXP, SEXP target_classSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type reference_class(reference_classSEXP);
-    Rcpp::traits::input_parameter< int >::type target_class(target_classSEXP);
-    rcpp_result_gen = Rcpp::wrap(C_trajectory_temporal_consistency_reference(data, reference_class, target_class));
-    return rcpp_result_gen;
-END_RCPP
-}
 // C_trajectory_water_analysis
 NumericMatrix C_trajectory_water_analysis(NumericMatrix data, int water_class, DataFrame target_class_map, IntegerVector excluded_values);
 RcppExport SEXP _restoreutils_C_trajectory_water_analysis(SEXP dataSEXP, SEXP water_classSEXP, SEXP target_class_mapSEXP, SEXP excluded_valuesSEXP) {
@@ -216,6 +203,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// C_trajectory_temporal_consistency_reference
+NumericMatrix C_trajectory_temporal_consistency_reference(NumericMatrix data, int reference_class, int target_class);
+RcppExport SEXP _restoreutils_C_trajectory_temporal_consistency_reference(SEXP dataSEXP, SEXP reference_classSEXP, SEXP target_classSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type reference_class(reference_classSEXP);
+    Rcpp::traits::input_parameter< int >::type target_class(target_classSEXP);
+    rcpp_result_gen = Rcpp::wrap(C_trajectory_temporal_consistency_reference(data, reference_class, target_class));
+    return rcpp_result_gen;
+END_RCPP
+}
 // C_validation_compare_versions
 NumericMatrix C_validation_compare_versions(NumericMatrix data, NumericMatrix mask, int data_class, int mask_class);
 RcppExport SEXP _restoreutils_C_validation_compare_versions(SEXP dataSEXP, SEXP maskSEXP, SEXP data_classSEXP, SEXP mask_classSEXP) {
@@ -243,10 +243,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_restoreutils_C_trajectory_neighbor_majority_analysis", (DL_FUNC) &_restoreutils_C_trajectory_neighbor_majority_analysis, 3},
     {"_restoreutils_C_trajectory_neighbor_majority_analysis_target", (DL_FUNC) &_restoreutils_C_trajectory_neighbor_majority_analysis_target, 3},
     {"_restoreutils_C_trajectory_cropland_transitions", (DL_FUNC) &_restoreutils_C_trajectory_cropland_transitions, 4},
-    {"_restoreutils_C_trajectory_temporal_consistency_reference", (DL_FUNC) &_restoreutils_C_trajectory_temporal_consistency_reference, 3},
     {"_restoreutils_C_trajectory_water_analysis", (DL_FUNC) &_restoreutils_C_trajectory_water_analysis, 4},
     {"_restoreutils_C_trajectory_urban_analysis", (DL_FUNC) &_restoreutils_C_trajectory_urban_analysis, 5},
     {"_restoreutils_C_trajectory_vs_analysis", (DL_FUNC) &_restoreutils_C_trajectory_vs_analysis, 4},
+    {"_restoreutils_C_trajectory_temporal_consistency_reference", (DL_FUNC) &_restoreutils_C_trajectory_temporal_consistency_reference, 3},
     {"_restoreutils_C_validation_compare_versions", (DL_FUNC) &_restoreutils_C_validation_compare_versions, 4},
     {NULL, NULL, 0}
 };

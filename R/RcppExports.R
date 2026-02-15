@@ -45,10 +45,6 @@ C_trajectory_cropland_transitions <- function(data, source_classes, cropland_id,
     .Call(`_restoreutils_C_trajectory_cropland_transitions`, data, source_classes, cropland_id, pasture_id)
 }
 
-C_trajectory_temporal_consistency_reference <- function(data, reference_class, target_class) {
-    .Call(`_restoreutils_C_trajectory_temporal_consistency_reference`, data, reference_class, target_class)
-}
-
 C_trajectory_water_analysis <- function(data, water_class, target_class_map, excluded_values) {
     .Call(`_restoreutils_C_trajectory_water_analysis`, data, water_class, target_class_map, excluded_values)
 }
@@ -59,6 +55,10 @@ C_trajectory_urban_analysis <- function(data, mask, urban_class_id, forest_class
 
 C_trajectory_vs_analysis <- function(data, vs_class, pasture_class, target_class) {
     .Call(`_restoreutils_C_trajectory_vs_analysis`, data, vs_class, pasture_class, target_class)
+}
+
+C_trajectory_temporal_consistency_reference <- function(data, reference_class, target_class) {
+    .Call(`_restoreutils_C_trajectory_temporal_consistency_reference`, data, reference_class, target_class)
 }
 
 C_validation_compare_versions <- function(data, mask, data_class, mask_class) {

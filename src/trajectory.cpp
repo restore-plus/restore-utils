@@ -277,33 +277,6 @@ NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVecto
 }
 
 // [[Rcpp::export]]
-NumericMatrix C_trajectory_temporal_consistency_reference(NumericMatrix data, int reference_class, int target_class) {
-    // This rule was originally implemented to:
-    // > "Se temos desmatamento no ano x, todos os anos 1:x-1 deverao ser floresta"
-
-    int npixel = data.nrow();
-    int nyear = data.ncol();
-
-    if (nyear < 3) {
-        stop("Expected at least 3 years (columns), but got " + std::to_string(nyear));
-    }
-
-    for (int i = 0; i < npixel; i++) {
-        // Remove edges (start: j = 1; end = j - 1)
-        for (int j = 0; j < nyear; j++) {
-            // If the current year is `reference_class`, apply consistency rule
-            if (static_cast<int>(data(i, j)) == reference_class) {
-                // Fill past years with target value
-                for (int t = 0; t < j; t++) {
-                    data(i, t) = target_class;
-                }
-            }
-        }
-    }
-    return data;
-}
-
-// [[Rcpp::export]]
 NumericMatrix C_trajectory_water_analysis(NumericMatrix data, int water_class, DataFrame target_class_map, IntegerVector excluded_values) {
     int npixel = data.nrow();
 
