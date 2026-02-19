@@ -1921,6 +1921,8 @@ reclassify_rule35_cropland_transitions <- function(files,
             cropland_id = cropland_id,
             pasture_id = pasture_id
         )
+        # Get only middle year
+        values <- values[,2]
         # Prepare and save results as raster
         sits:::.raster_write_block(
             files = block_file,
