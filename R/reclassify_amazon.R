@@ -1795,6 +1795,12 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
                 ),
                 "Agricultura semi-perene" = (
                     cube == "Agricultura anual" & mask == "CULTURA AGRICOLA SEMIPERENE"
+                ),
+                "Agricultura anual" = (
+                    cube != "Agricultura anual" & mask %in% c(
+                        "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                        "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO"
+                    )
                 )
             )
         )
