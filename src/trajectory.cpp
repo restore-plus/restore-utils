@@ -240,7 +240,7 @@ NumericMatrix C_trajectory_neighbor_majority_analysis_target(NumericMatrix data,
 }
 
 // [[Rcpp::export]]
-NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVector source_classes, int cropland_id, int pasture_id) {
+NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVector source_classes, IntegerVector target_classes, int pasture_id, int cropland_id) {
     // This rule was originally implemented to:
     // > "Se temos pastagem agricultura e desmatamento, ag anual (2ciclos), qualquer pastagem agricultura e desmatamento, o valor do meio (ag anual), vira pastagem"
 
@@ -262,7 +262,7 @@ NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVecto
             // Are left and right values valid?
             bool is_left_valid = std::find(source_classes.begin(), source_classes.end(), left_value) != source_classes.end();
             bool is_middle_valid = middle_value == cropland_id;
-            bool is_right_valid = right_value == pasture_id;
+            bool is_right_valid = std::find(target_classes.begin(), target_classes.end(), right_value) != target_classes.end();
 
             // Define auxiliary variables
             bool is_left_equal_to_right = is_left_valid && is_right_valid;

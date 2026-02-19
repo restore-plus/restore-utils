@@ -41,8 +41,8 @@ C_trajectory_neighbor_majority_analysis_target <- function(data, reference_class
     .Call(`_restoreutils_C_trajectory_neighbor_majority_analysis_target`, data, reference_class, target_class)
 }
 
-C_trajectory_cropland_transitions <- function(data, source_classes, cropland_id, pasture_id) {
-    .Call(`_restoreutils_C_trajectory_cropland_transitions`, data, source_classes, cropland_id, pasture_id)
+C_trajectory_cropland_transitions <- function(data, source_classes, target_classes, pasture_id, cropland_id) {
+    .Call(`_restoreutils_C_trajectory_cropland_transitions`, data, source_classes, target_classes, pasture_id, cropland_id)
 }
 
 C_trajectory_water_analysis <- function(data, water_class, target_class_map, excluded_values) {

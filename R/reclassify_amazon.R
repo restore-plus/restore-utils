@@ -1827,6 +1827,7 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
 #' @export
 reclassify_rule35_cropland_transitions <- function(files,
                                                    source_classes,
+                                                   target_classes,
                                                    cropland_id,
                                                    pasture_id,
                                                    version,
@@ -1886,6 +1887,7 @@ reclassify_rule35_cropland_transitions <- function(files,
     chunks[["files"]] <- rep(list(files), nrow(chunks))
     chunks[["out_filename"]] <- out_filename
     chunks[["source_classes"]] <- rep(list(source_classes), nrow(chunks))
+    chunks[["target_classes"]] <- rep(list(target_classes), nrow(chunks))
     chunks[["cropland_id"]] <- cropland_id
     chunks[["pasture_id"]] <- pasture_id
     # Start workers
@@ -1899,6 +1901,7 @@ reclassify_rule35_cropland_transitions <- function(files,
         files <- chunk[["files"]][[1]]
         out_filename <- chunk[["out_filename"]]
         source_classes <- chunk[["source_classes"]][[1]]
+        target_classes <- chunk[["target_classes"]][[1]]
         cropland_id <- chunk[["cropland_id"]]
         pasture_id <- chunk[["pasture_id"]]
         # Define block file name / path
@@ -1918,6 +1921,7 @@ reclassify_rule35_cropland_transitions <- function(files,
         values <- restoreutils:::C_trajectory_cropland_transitions(
             data = values,
             source_classes = source_classes,
+            target_classes = target_classes,
             cropland_id = cropland_id,
             pasture_id = pasture_id
         )

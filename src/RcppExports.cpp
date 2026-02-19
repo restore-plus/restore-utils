@@ -147,16 +147,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // C_trajectory_cropland_transitions
-NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVector source_classes, int cropland_id, int pasture_id);
-RcppExport SEXP _restoreutils_C_trajectory_cropland_transitions(SEXP dataSEXP, SEXP source_classesSEXP, SEXP cropland_idSEXP, SEXP pasture_idSEXP) {
+NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVector source_classes, IntegerVector target_classes, int pasture_id, int cropland_id);
+RcppExport SEXP _restoreutils_C_trajectory_cropland_transitions(SEXP dataSEXP, SEXP source_classesSEXP, SEXP target_classesSEXP, SEXP pasture_idSEXP, SEXP cropland_idSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type source_classes(source_classesSEXP);
-    Rcpp::traits::input_parameter< int >::type cropland_id(cropland_idSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type target_classes(target_classesSEXP);
     Rcpp::traits::input_parameter< int >::type pasture_id(pasture_idSEXP);
-    rcpp_result_gen = Rcpp::wrap(C_trajectory_cropland_transitions(data, source_classes, cropland_id, pasture_id));
+    Rcpp::traits::input_parameter< int >::type cropland_id(cropland_idSEXP);
+    rcpp_result_gen = Rcpp::wrap(C_trajectory_cropland_transitions(data, source_classes, target_classes, pasture_id, cropland_id));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -242,7 +243,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_restoreutils_C_trajectory_neighbor_consistency_analysis_with_mask", (DL_FUNC) &_restoreutils_C_trajectory_neighbor_consistency_analysis_with_mask, 4},
     {"_restoreutils_C_trajectory_neighbor_majority_analysis", (DL_FUNC) &_restoreutils_C_trajectory_neighbor_majority_analysis, 3},
     {"_restoreutils_C_trajectory_neighbor_majority_analysis_target", (DL_FUNC) &_restoreutils_C_trajectory_neighbor_majority_analysis_target, 3},
-    {"_restoreutils_C_trajectory_cropland_transitions", (DL_FUNC) &_restoreutils_C_trajectory_cropland_transitions, 4},
+    {"_restoreutils_C_trajectory_cropland_transitions", (DL_FUNC) &_restoreutils_C_trajectory_cropland_transitions, 5},
     {"_restoreutils_C_trajectory_water_analysis", (DL_FUNC) &_restoreutils_C_trajectory_water_analysis, 4},
     {"_restoreutils_C_trajectory_urban_analysis", (DL_FUNC) &_restoreutils_C_trajectory_urban_analysis, 5},
     {"_restoreutils_C_trajectory_vs_analysis", (DL_FUNC) &_restoreutils_C_trajectory_vs_analysis, 4},
