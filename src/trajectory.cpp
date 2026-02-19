@@ -260,7 +260,7 @@ NumericMatrix C_trajectory_cropland_transitions(NumericMatrix data, IntegerVecto
             int right_value = static_cast<int>(data(i, j + 1));
 
             // Are left and right values valid?
-            bool is_left_valid = std::find(source_classes.begin(), source_classes.end(), left_value) == source_classes.end();
+            bool is_left_valid = std::find(source_classes.begin(), source_classes.end(), left_value) != source_classes.end();
             bool is_middle_valid = middle_value == cropland_id;
             bool is_right_valid = right_value == pasture_id;
 
