@@ -1773,7 +1773,7 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
                                                       rarg_year,
                                                       exclude_mask_na = FALSE) {
     # build args for expression
-    terraclass_years <- c(2016, 2018, 2020, 2022)
+    terraclass_years <- c(2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
 
     stopifnot(all(sits::sits_labels(cube) %in% labels_amazon_mcti()))
 
@@ -1798,6 +1798,7 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
                 ),
                 "Agricultura anual" = (
                     cube != "Agricultura anual" & mask %in% c(
+                        "CULTURA AGRICOLA TEMPORARIA",
                         "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
                         "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO"
                     )
