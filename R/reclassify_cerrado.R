@@ -38,3 +38,55 @@ reclassify_cer_rule0_natveg <- function(cube, mask, multicores, memsize, output_
 
     .reclassify_save_rds(cube, output_dir, version)
 }
+
+#' @export
+reclassify_cer_rule1_veg <- function(cube, mask, multicores, memsize, output_dir, version, exclude_mask_na = FALSE) {
+
+    # Cube labels
+    cube_labels <- c(
+        "Cerrado",
+        "Cerradao",
+        "Open-Cerrado"
+    )
+
+    # Mask labels
+    mask_labels <- sits::sits_labels(mask)
+
+
+    # Build rules expression: each label will be a class
+    expressions <- lapply(mask_labels, function(mask_label) {
+        lapply(cube_labels, function(cube_label) {
+            bquote(mask == .(mask_label) && cube == .(cube_label))
+        })
+    })
+
+    # Transform to an unique level list
+    expressions <- unlist(expressions)
+
+    # Create mask labels
+    labels_to_mask <- sapply(mask_labels, function(mask_label) {
+        glue::glue("{mask_label}-{cube_labels}")
+    }, USE.NAMES = FALSE)
+
+    # Add labels for the output list
+    names(expressions) <- c(labels_to_mask)
+
+    # Transform to call
+    rules_expression <- as.call(c(bquote(list), expressions))
+
+    # reclassify!
+    cube <- eval(bquote(
+        sits::sits_reclassify(
+            cube = cube,
+            mask = mask,
+            rules = .(rules_expression),
+            exclude_mask_na = exclude_mask_na,
+            multicores = multicores,
+            memsize = memsize,
+            output_dir = output_dir,
+            version = version
+        )
+    ))
+
+    .reclassify_save_rds(cube, output_dir, version)
+}
