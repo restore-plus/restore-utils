@@ -147,6 +147,7 @@ roi_cerrado_regions <- function(region_id, crs = NULL, as_file = FALSE, as_union
 #' @param crs Character with the CRS to use. If not provided, the CRS of the data file is used.
 #' @param as_file Logical with whether to return the \code{sf} object as a file path.
 #' @param as_convex Logical with whether to return the sf object as a convex hull.
+#' @param as_union Logical with whether to union the \code{sf} objects.
 #' @param use_buffer Logical with whether to apply a buffer to the \code{sf} object.
 #'
 #' @description This function returns the \code{sf} object for the Cerrado biome.
@@ -154,14 +155,20 @@ roi_cerrado_regions <- function(region_id, crs = NULL, as_file = FALSE, as_union
 #' @return \code{sf} or file path object for the Cerrado biome
 #' @keywords internal
 #' @export
-roi_cerrado_biome <- function(crs = NULL, as_file = FALSE, as_convex = FALSE, use_buffer = FALSE) {
+roi_cerrado_biome <- function(crs = NULL, as_file = FALSE, as_convex = FALSE, as_union = FALSE, use_buffer = FALSE) {
     # generate eco region geometry
     cerrado_geom <- .roi_cerrado_ecoregion_sf(crs = crs) |>
                         sf::st_make_valid()
 
-    # Apply buffer if required
-    if (use_buffer) {
-        cerrado_geom <- sf::st_buffer(cerrado_geom, 0.001)
+    # Union
+    if (as_union) {
+        if (use_buffer) {
+            cerrado_geom <- sf::st_buffer(cerrado_geom, 0.001)
+        }
+
+        cerrado_geom <- cerrado_geom |>
+            sf::st_union() |>
+            sf::st_make_valid()
     }
 
     # Transform convex hull
@@ -184,4 +191,26 @@ roi_cerrado_biome <- function(crs = NULL, as_file = FALSE, as_convex = FALSE, us
 
     # Return!
     return(cerrado_geom)
+}
+
+#' @title Get the tiles for the Cerrado biome
+#'
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#'
+#' @description This function returns the tiles for the Cerrado biome.
+#'
+#' @param grid_system Character with the grid system to use.
+#'
+#' @return \code{sf} object with the tiles for the Cerrado biome
+#' @keywords internal
+#' @export
+tiles_cerrado_biome <- function(grid_system = "BDC_MD_V2") {
+    # Generate eco region geometry
+    cerrado_geom <- roi_cerrado_biome(as_union = TRUE)
+
+    # Convert to tiles and return
+    suppressWarnings(
+        sits::sits_roi_to_tiles(cerrado_geom, grid_system = grid_system)
+    )
 }

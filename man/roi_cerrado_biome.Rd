@@ -8,6 +8,7 @@ roi_cerrado_biome(
   crs = NULL,
   as_file = FALSE,
   as_convex = FALSE,
+  as_union = FALSE,
   use_buffer = FALSE
 )
 }
@@ -17,6 +18,8 @@ roi_cerrado_biome(
 \item{as_file}{Logical with whether to return the \code{sf} object as a file path.}
 
 \item{as_convex}{Logical with whether to return the sf object as a convex hull.}
+
+\item{as_union}{Logical with whether to union the \code{sf} objects.}
 
 \item{use_buffer}{Logical with whether to apply a buffer to the \code{sf} object.}
 }
