@@ -56,7 +56,7 @@ reclassify_cer_rule1_veg <- function(cube, mask, multicores, memsize, output_dir
     # Build rules expression: each label will be a class
     expressions <- lapply(mask_labels, function(mask_label) {
         lapply(cube_labels, function(cube_label) {
-            bquote(mask == .(mask_label) && cube == .(cube_label))
+            bquote(mask == .(mask_label) & cube == .(cube_label))
         })
     })
 
