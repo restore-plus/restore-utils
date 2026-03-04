@@ -52,7 +52,6 @@ reclassify_cer_rule1_veg <- function(cube, mask, multicores, memsize, output_dir
     # Mask labels
     mask_labels <- sits::sits_labels(mask)
 
-
     # Build rules expression: each label will be a class
     expressions <- lapply(mask_labels, function(mask_label) {
         lapply(cube_labels, function(cube_label) {
@@ -65,7 +64,7 @@ reclassify_cer_rule1_veg <- function(cube, mask, multicores, memsize, output_dir
 
     # Create mask labels
     labels_to_mask <- sapply(mask_labels, function(mask_label) {
-        glue::glue("{mask_label}-{cube_labels}")
+        glue::glue("{cube_labels}-{mask_label}")
     }, USE.NAMES = FALSE)
 
     # Add labels for the output list
