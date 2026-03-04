@@ -8,6 +8,7 @@ gdal_rasterize_segments(
   file,
   res,
   output_dir,
+  crs = crs_bdc(),
   style = NULL,
   type = "Int16",
   gdal_config = list()
@@ -19,6 +20,8 @@ gdal_rasterize_segments(
 \item{res}{Target resolution for the output raster (in map units)}
 
 \item{output_dir}{Directory where the output raster will be saved}
+
+\item{crs}{Output CRS}
 
 \item{style}{Optional data frame with columns 'name', 'index', and 'color'
 for class mapping. If NULL, classes are automatically numbered.}

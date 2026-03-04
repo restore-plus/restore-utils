@@ -11,6 +11,7 @@
 #' @param file Input vector file path (e.g., .gpkg, .shp)
 #' @param res Target resolution for the output raster (in map units)
 #' @param output_dir Directory where the output raster will be saved
+#' @param crs Output CRS
 #' @param style Optional data frame with columns 'name', 'index', and 'color'
 #'   for class mapping. If NULL, classes are automatically numbered.
 #' @param type GDAL data type for output raster (default: "Int16")
@@ -30,8 +31,8 @@
 #' }
 #'
 #' @export
-gdal_rasterize_segments <- function(file, res, output_dir, style = NULL,
-                                    type = "Int16", gdal_config = list()) {
+gdal_rasterize_segments <- function(file, res, output_dir, crs = crs_bdc(),
+                                    style = NULL, type = "Int16", gdal_config = list()) {
     stopifnot(!is.null(res))
     stopifnot(!is.null(file))
     stopifnot(!is.null(output_dir))
