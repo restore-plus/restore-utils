@@ -1,6 +1,6 @@
 
 .prodes_files <- function() {
-    files <- c(
+    base_files <- c(
         "https://www.dropbox.com/scl/fi/dfb8f8q7ebetlc4g6ez6n/prodes_amazonia_legal_2024.zip?rlkey=ue9n4i5gsqyjp3jmpw9jeos64&dl=1",
         "https://www.dropbox.com/scl/fi/qfbx8cco2mv13ysutestq/prodes_amazonia_2024.zip?rlkey=w6bhzqpenx7s29zhxxa6reeio&dl=1",
         "https://www.dropbox.com/scl/fi/r5rza5i0284p3682itwfh/prodes_amazonia_2000.zip?rlkey=jkwyj56clsy92sqd76glxf0wp&dl=1",
@@ -13,17 +13,32 @@
         "https://www.dropbox.com/scl/fi/ufr60nf6gs54exzsp28r2/prodes_amazonia_2007.zip?rlkey=m56evjijjhlc05xz0un5envss&dl=1"
     )
 
-    tibble::tibble(
-        file = files,
+    base_tbl <- tibble::tibble(
+        file = base_files,
+        base = "prodes",
         type = c("nf", rep("map", 9)),
         year = c(2024, 2024, 2000:2007)
     )
+
+    years <- 2000:2022
+    map_files <- glue::glue(
+        "https://restore-plus.s3.us-east-1.amazonaws.com/zenodo/amazon/v2/raster/{years}/LANDSAT_OLI_MOSAIC_{years}-01-01_{years}-12-31_class_v1.tif"
+    )
+    map_tbl <- tibble::tibble(
+        file = map_files,
+        base = "restore",
+        type = "map",
+        year = years
+    )
+
+    dplyr::bind_rows(base_tbl, map_tbl)
 }
 
-.prodes_file_metadata <- function(year, type = "map") {
+.prodes_file_metadata <- function(year, type = "map", base = "prodes") {
     file_selected <- .prodes_files() |>
         dplyr::filter(.data[["year"]] == !!year) |>
-        dplyr::filter(.data[["type"]] == !!type)
+        dplyr::filter(.data[["type"]] == !!type) |>
+        dplyr::filter(.data[["base"]] == !!base)
 
     # Sanity check: We need to have one file per year
     if (nrow(file_selected) != 1) {
@@ -45,9 +60,11 @@
         stringr::str_replace("EXT", ext)
 }
 
-.prodes_download <- function(year, output_dir, type = "map") {
+.prodes_download <- function(year, output_dir, type = "map", base = "prodes") {
     # Get file metadata of the selected file year
-    prd_year_file <- .prodes_file_metadata(year = year, type = type)
+    prd_year_file <- .prodes_file_metadata(
+        year = year, type = type, base = base
+    )
 
     # Define output dir
     output_file <- fs::path(output_dir) / .prodes_file_zip(prd_year_file)
@@ -67,6 +84,16 @@
 .prodes_extract_files <- function(year, file, output_dir) {
     # Fix output type
     output_dir <- fs::path(output_dir)
+
+    if (fs::path_ext(file) == "tif") {
+        return(
+            tibble::tibble(
+                file      = file,
+                type      = "raster",
+                processed = TRUE
+            )
+        )
+    }
 
     # Get files to be extracted
     files_zip <- utils::unzip(file, list = TRUE) |>
@@ -167,7 +194,7 @@
     )
 }
 
-.crop_prodes <- function(year, region_id, version, type = "map") {
+.crop_prodes <- function(year, region_id, version, type = "map", base = "prodes") {
     # Define output dir
     output_dir <- .prodes_dir(year = year, version = version)
 
@@ -175,7 +202,9 @@
     fs::dir_create(output_dir)
 
     # Download year file
-    output_file <- .prodes_download(year = year, output_dir = output_dir, type = type)
+    output_file <- .prodes_download(
+        year = year, output_dir = output_dir, type = type, base = base
+    )
 
     # Extract files from zip
     extracted_files <- .prodes_extract_files(year       = year,
@@ -356,26 +385,35 @@ prepare_prodes_nf <- function(region_id, year = 2024, multicores = 1, memsize = 
 
 #' @export
 prepare_prodes <- function(
-    region_id,
-    years = 2024,
-    multicores = 1,
-    memsize = 120,
-    version = "v2",
-    prodes_loader = NULL,
-    exclude_mask_na = FALSE,
-    nonforest_mask = TRUE,
-    nonforest_complete = TRUE,
-    fix_pre_aggregation_prodes = TRUE
+        region_id,
+        years = 2024,
+        multicores = 1,
+        memsize = 120,
+        version = "v2",
+        base = "prodes",
+        prodes_loader = NULL,
+        exclude_mask_na = FALSE,
+        nonforest_mask = TRUE,
+        nonforest_complete = TRUE,
+        fix_pre_aggregation_prodes = TRUE
 ) {
     # Arrange years for processing using PRODES methodology
     years <- sort(years, decreasing = TRUE)
+
+    if (base == "restore" && nonforest_mask || nonforest_complete) {
+        cli::cli_abort(
+            paste0("Forest mask from restore should not process non-fores ",
+                   "masks twice."
+            )
+        )
+    }
 
     # Verify if 2008 is into years list with years before 2007
     if (!2008 %in% years && any(years <= 2007) && !fix_pre_aggregation_prodes) {
         cli::cli_alert_info(
             paste0("Forest masks from PRODES 2000 to 2007 wont be fixed ",
-                  "once 2008 was not provided. Please process 2008 or use ",
-                  "`fix_pre_aggregation_prodes` if you already have it")
+                   "once 2008 was not provided. Please process 2008 or use ",
+                   "`fix_pre_aggregation_prodes` if you already have it")
         )
     }
 
@@ -409,6 +447,7 @@ prepare_prodes <- function(
             .crop_prodes(
                 year = year,
                 region_id = region_id,
+                base = base,
                 version = version
             )
         }

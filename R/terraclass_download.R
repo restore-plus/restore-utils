@@ -9,7 +9,8 @@
         "https://www.dropbox.com/scl/fi/6g4zq9egtgbg2yqrme7nt/AMZ.2016.M.zip?rlkey=gfjbmmc2fb32ij6gx89pn6kk1&dl=1",
         "https://www.dropbox.com/scl/fi/5ky9t0djzbsqstfaxzjlb/AMZ.2018.M.zip?rlkey=jq697xtk1hu4ignvwna8u7qno&st=k49fj43i&dl=1",
         "https://www.dropbox.com/scl/fi/du18c061tazxe8aa9qhms/AMZ.2020.M.zip?rlkey=en7gsyavr8g42s2inpzbarmds&st=3441n02c&dl=1",
-        "https://www.dropbox.com/scl/fi/udl9kkakhoj7gct2b34zi/AMZ.2022.M.zip?rlkey=5jpxmzssfqaco4f2q2du24ccq&st=t6e51bg8&dl=1"
+        "https://www.dropbox.com/scl/fi/udl9kkakhoj7gct2b34zi/AMZ.2022.M.zip?rlkey=5jpxmzssfqaco4f2q2du24ccq&st=t6e51bg8&dl=1",
+        "https://restore-plus.s3.us-east-1.amazonaws.com/tools/restore-utils/assets/tc/2024/AMZ.2024.M.zip"
     )
 
     tibble::tibble(
@@ -132,7 +133,11 @@ download_terraclass <- function(year, output_dir, version = "v1") {
 }
 
 #' @export
-prepare_terraclass <- function(years, region_id, fix_non_observed = TRUE, fix_other_uses = TRUE, fix_urban_area = TRUE, fix_non_forest = TRUE, memsize = 8, multicores = 1, timeout = 720, version = "v1", exclude_mask_na = FALSE) {
+prepare_terraclass <- function(years, region_id, fix_non_observed = TRUE,
+                               fix_other_uses = TRUE, fix_urban_area = TRUE,
+                               fix_non_forest = TRUE, add_non_forest = TRUE,
+                               memsize = 8, multicores = 1, timeout = 720,
+                               version = "v1", exclude_mask_na = FALSE) {
     # Download all specified years
     extracted_files <- purrr::map_dfr(years, function(year) {
         # Set timeout
@@ -207,6 +212,39 @@ prepare_terraclass <- function(years, region_id, fix_non_observed = TRUE, fix_ot
         dplyr::select(extracted_files, -.data[["processed"]]) |>
             dplyr::mutate(year = !!year)
     })
+    # Add non-forest into terraclass 2024
+    if (add_non_forest) {
+        if (2024 %in% years) {
+            # Load PRODES mask
+            mask <- load_prodes_2024(
+                multicores = multicores, memsize = memsize
+            )
+            # Creating cube
+            current_cube <- load_terraclass_2024(
+                memsize = memsize, multicores = multicores
+            )
+            # Define output dir
+            output_dir <- .terraclass_dir(year = 2024, version = version)
+            # Add non-forest class
+            reclassified_cube <- sits::sits_reclassify(
+                cube = current_cube,
+                mask = mask,
+                rules = list(
+                    "NAO FLORESTA" = mask == "NAO FLORESTA"
+                ),
+                memsize = memsize,
+                multicores = multicores,
+                output_dir = output_dir,
+                exclude_mask_na = exclude_mask_na,
+                version = "v1-mask-non-forest-mask"
+            )
+            # Move created file
+            fs::file_move(
+                path = reclassified_cube[["file_info"]][[1]][["path"]],
+                new_path = current_cube[["file_info"]][[1]][["path"]]
+            )
+        }
+    }
 
     # Fix non observed
     if (fix_non_observed) {
