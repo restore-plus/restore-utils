@@ -493,3 +493,47 @@ load_terraclass_2022 <- function(version = "v1", multicores = 32, memsize = 120)
     }
     terraclass
 }
+
+#' @export
+load_terraclass_2024 <- function(version = "v1", multicores = 32, memsize = 120) {
+    terraclass_dir <- .terraclass_dir(version, 2024)
+    terraclass_rds <- .terraclass_rds(terraclass_dir)
+
+    if (fs::file_exists(terraclass_rds)) {
+
+        terraclass <- readRDS(terraclass_rds)
+
+    } else {
+
+        terraclass <- sits::sits_cube(
+            source = "MPC",
+            collection = "LANDSAT-C2-L2",
+            data_dir = terraclass_dir,
+            multicores = multicores,
+            memsize = memsize,
+            parse_info = c("satellite", "sensor",
+                           "tile", "start_date", "end_date",
+                           "band", "version"),
+            bands = "class",
+            labels = c("1" = "VEGETACAO NATURAL FLORESTAL PRIMARIA",
+                       "2" = "VEGETACAO NATURAL FLORESTAL SECUNDARIA",
+                       "9" = "SILVICULTURA",
+                       "10" = "PASTAGEM ARBUSTIVA/ARBOREA",
+                       "11" = "PASTAGEM HERBACEA",
+                       "12" = "CULTURA AGRICOLA PERENE",
+                       "13" = "CULTURA AGRICOLA SEMIPERENE",
+                       "14" = "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                       "15" = "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO",
+                       "16" = "MINERACAO",
+                       "17" = "URBANIZADA",
+                       "20" = "OUTROS USOS",
+                       "22" = "DESFLORESTAMENTO NO ANO",
+                       "23" = "CORPO DAGUA",
+                       "25" = "NAO OBSERVADO",
+                       "51" = "NAO FLORESTA"
+            )
+        )
+        saveRDS(terraclass, terraclass_rds)
+    }
+    terraclass
+}
