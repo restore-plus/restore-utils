@@ -306,7 +306,7 @@
         )
 
         # Load prodes of the next year
-        prodes_next_year_orig <- get(paste0("load_prodes_", year + 1))
+        prodes_next_year_orig <- get(paste0("load_prodes_", year))
         prodes_next_year_orig <- prodes_next_year_orig(
             multicores = multicores,
             memsize = memsize
