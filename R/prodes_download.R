@@ -266,6 +266,82 @@
     dplyr::select(extracted_files, -.data[["processed"]])
 }
 
+.prodes_restore_base <- function(region_id,
+                                 years,
+                                 multicores = 1,
+                                 memsize = 120,
+                                 version = "v2",
+                                 exclude_mask_na = FALSE) {
+    # Sort years to ensure we are processing pairs: c(year, year + 1)
+    years <- sort(years)
+
+    # Processing each year
+    purrr::map(seq_len(length(years)), function(idx) {
+        # Get current year
+        year <- years[[idx]]
+
+        # Define output dir
+        output_version <- glue::glue("base/restore/{year}")
+
+        output_dir <- .prodes_dir(version = output_version, year = year)
+        output_dir_prev <- .prodes_dir(version = output_version, year = year - 1)
+
+        # Create output dir
+        fs::dir_create(c(output_dir, output_dir_prev))
+
+        # Download and crop the specified year
+        .crop_prodes(
+            year = year - 1,
+            region_id = region_id,
+            base = "restore",
+            version = output_version
+        )
+
+        # Load prodes of the current year
+        restore_map_prev_year <- load_restore_mosaic(
+            data_dir = output_dir_prev,
+            multicores = multicores,
+            memsize = memsize,
+            labels = labels_amazon_mcti()
+        )
+
+        # Load prodes of the next year
+        prodes_next_year_orig <- get(paste0("load_prodes_", year + 1))
+        prodes_next_year_orig <- prodes_next_year_orig(
+            multicores = multicores,
+            memsize = memsize
+        )
+
+        # Process forest mask
+        deforestation_years <- paste0("d", (year+1):2024)
+        residual_future_years <- paste0("r", (year + 1):2024)
+        residual_past_years <- paste0("r", 2000:(year - 1))
+
+        rules_expression <- bquote(
+            list(
+                "Others" = cube %in% c(.(residual_past_years), "Vegetação Nativa"),
+                "Vegetação Nativa" = (
+                    mask == "Floresta" |
+                    cube %in% .(deforestation_years) |
+                    cube %in% .(residual_future_years)
+                )
+            )
+        )
+
+        prodes_forest_mask <- eval(bquote(
+            sits::sits_reclassify(
+                cube       = prodes_next_year_orig,
+                mask       = restore_map_prev_year,
+                rules      = .(rules_expression),
+                multicores = multicores,
+                memsize    = memsize,
+                output_dir = output_dir,
+                exclude_mask_na = exclude_mask_na
+            )
+        ))
+    })
+}
+
 #' @export
 download_prodes <- function(year, output_dir, version = "v2") {
     # Transform output dir object
@@ -400,10 +476,16 @@ prepare_prodes <- function(
     # Arrange years for processing using PRODES methodology
     years <- sort(years, decreasing = TRUE)
 
-    if (base == "restore" && nonforest_mask || nonforest_complete) {
-        cli::cli_abort(
-            paste0("Forest mask from restore should not process non-fores ",
-                   "masks twice."
+    # If base is restore, use a special processor
+    if (base == "restore") {
+        return(
+            .prodes_restore_base(
+                region_id = region_id,
+                years = years,
+                multicores = multicores,
+                memsize = memsize,
+                version = version,
+                exclude_mask_na = exclude_mask_na
             )
         )
     }
