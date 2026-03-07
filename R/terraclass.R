@@ -530,7 +530,7 @@ load_terraclass_2024 <- function(version = "v1", multicores = 32, memsize = 120)
                        "22" = "DESFLORESTAMENTO NO ANO",
                        "23" = "CORPO DAGUA",
                        "25" = "NAO OBSERVADO",
-                       "26" = "NAO FLORESTA"
+                       "51" = "NAO FLORESTA"
             )
         )
         saveRDS(terraclass, terraclass_rds)
