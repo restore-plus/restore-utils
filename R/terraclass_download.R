@@ -346,7 +346,7 @@ prepare_terraclass <- function(years, region_id, fix_non_observed = TRUE,
         cli::cli_inform("Mask update: Fixing urban area")
 
         # Define valid years
-        valid_years <- c(2022, 2020, 2018, 2014, 2012, 2010, 2008)
+        valid_years <- c(2024, 2022, 2020, 2018, 2014, 2012, 2010, 2008)
 
         stopifnot(all(valid_years %in% years))
 
