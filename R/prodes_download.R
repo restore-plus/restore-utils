@@ -279,6 +279,7 @@
     purrr::map(seq_len(length(years)), function(idx) {
         # Get current year
         year <- years[[idx]]
+        previous_year <- min(year - 1, 2022)
 
         if (year > 2024) {
             cli::cli_abort("PRODES available only until 2024")
@@ -288,14 +289,14 @@
         output_version <- glue::glue("base/restore/{year}")
 
         output_dir <- .prodes_dir(version = output_version, year = year)
-        output_dir_prev <- .prodes_dir(version = output_version, year = year - 1)
+        output_dir_prev <- .prodes_dir(version = output_version, year = previous_year)
 
         # Create output dir
         fs::dir_create(c(output_dir, output_dir_prev))
 
         # Download and crop the specified year
         .crop_prodes(
-            year = min(year - 1, 2022),
+            year = previous_year,
             region_id = region_id,
             base = "restore",
             version = output_version
