@@ -280,6 +280,10 @@
         # Get current year
         year <- years[[idx]]
 
+        if (year > 2024) {
+            cli::cli_abort("PRODES available only until 2024")
+        }
+
         # Define output dir
         output_version <- glue::glue("base/restore/{year}")
 
@@ -291,7 +295,7 @@
 
         # Download and crop the specified year
         .crop_prodes(
-            year = year - 1,
+            year = min(year - 1, 2022),
             region_id = region_id,
             base = "restore",
             version = output_version
@@ -313,19 +317,30 @@
         )
 
         # Process forest mask
-        deforestation_years <- paste0("d", (year+1):2024)
-        residual_future_years <- paste0("r", (year + 1):2024)
+        deforestation_current_year <- paste0("d", year)
+        deforestation_future_years <- paste0("d", (year+1):2030)
+        deforestation_past_years <- paste0("d", 2000:(year - 1))
+
+        residual_current_year <- paste0("r", year)
+        residual_future_years <- paste0("r", (year+1):2030)
         residual_past_years <- paste0("r", 2000:(year - 1))
 
-        rules_expression <- bquote(
-            list(
-                "Others" = cube %in% c(.(residual_past_years), "Vegetação Nativa"),
-                "Vegetação Nativa" = (
-                    mask == "Floresta" |
-                    cube %in% .(deforestation_years) |
+        rules_expression <- list(
+            "Others" = bquote(cube %in% c(.(residual_past_years), .(deforestation_past_years), "Vegetação Nativa")),
+            "Vegetação Nativa" = bquote(
+                mask == "Floresta" |
+                    cube %in% .(deforestation_future_years) |
                     cube %in% .(residual_future_years)
-                )
-            )
+            ),
+            bquote(cube == .(deforestation_current_year)),
+            bquote(cube == .(residual_current_year))
+        )
+
+        names(rules_expression) <- c(
+            "Others",
+            "Vegetação Nativa",
+            deforestation_current_year,
+            residual_current_year
         )
 
         prodes_forest_mask <- eval(bquote(
@@ -339,6 +354,20 @@
                 exclude_mask_na = exclude_mask_na
             )
         ))
+
+        old_file <- prodes_next_year_orig[["file_info"]][[1]][["path"]]
+        new_file <- prodes_forest_mask[["file_info"]][[1]][["path"]]
+
+        # Handle old file
+        old_file_rename <- old_file |>
+                                fs::path_ext_remove() |>
+                                stringr::str_c("-original") |>
+                                fs::path_ext_set("tif")
+
+        fs::file_move(old_file, old_file_rename)
+
+        # Move new file to the old directory
+        fs::file_move(new_file, old_file)
     })
 }
 
