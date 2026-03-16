@@ -276,7 +276,7 @@
     years <- sort(years)
 
     # Processing each year
-    purrr::map(seq_len(length(years)), function(idx) {
+    files_to_move <- purrr::map_dfr(seq_len(length(years)), function(idx) {
         # Get current year
         year <- years[[idx]]
         previous_year <- min(year - 1, 2022)
@@ -327,12 +327,13 @@
         residual_past_years <- paste0("r", 2000:(year - 1))
 
         rules_expression <- list(
-            "Others" = bquote(cube %in% c(.(residual_past_years), .(deforestation_past_years), "Vegetação Nativa")),
+            "Others" = bquote(cube == "Vegetação Nativa"),
             "Vegetação Nativa" = bquote(
                 mask == "Floresta" |
                     cube %in% .(deforestation_future_years) |
                     cube %in% .(residual_future_years)
             ),
+            "Others Deforestation" = bquote(cube %in% c(.(residual_past_years), .(deforestation_past_years))),
             bquote(cube == .(deforestation_current_year)),
             bquote(cube == .(residual_current_year))
         )
@@ -340,6 +341,7 @@
         names(rules_expression) <- c(
             "Others",
             "Vegetação Nativa",
+            "Others Deforestation",
             deforestation_current_year,
             residual_current_year
         )
@@ -365,10 +367,57 @@
                                 stringr::str_c("-original") |>
                                 fs::path_ext_set("tif")
 
-        fs::file_move(old_file, old_file_rename)
+        # fs::file_move(old_file, old_file_rename)
 
         # Move new file to the old directory
-        fs::file_move(new_file, old_file)
+        # fs::file_move(new_file, old_file)
+
+        # Prepare RDS
+        file_rds <- fs::path(fs::path_dir(old_file)) / "prodes.rds"
+
+        file_rds_rename <- file_rds |>
+                            fs::path_ext_remove() |>
+                            stringr::str_c("-original") |>
+                            fs::path_ext_set("rds")
+
+        # fs::file_move(file_rds, file_rds_rename)
+
+        # Save new cube
+        prodes_forest_mask[["file_info"]][[1]][["path"]] <- old_file
+        # saveRDS(prodes_forest_mask, file_rds)
+
+        tibble::tibble(
+            file_rename_src = character(),
+            file_rename_tgt = character(),
+            file_new_src    = character(),
+            file_new_tgt    = character(),
+            rds_src         = character(),
+            rds_tgt         = character(),
+            cube            = list()
+        ) |>
+            tibble::add_row(
+                file_rename_src = old_file,
+                file_rename_tgt = old_file_rename,
+                file_new_src    = new_file,
+                file_new_tgt    = old_file,
+                rds_src         = file_rds,
+                rds_tgt         = file_rds_rename,
+                cube            = list(prodes_forest_mask)
+            )
+    })
+
+    slider::slide(files_to_move, function(row) {
+        # Old files
+        fs::file_move(row[["file_rename_src"]], row[["file_rename_tgt"]])
+
+        # New files
+        fs::file_move(row[["file_new_src"]], row[["file_new_tgt"]])
+
+        # RDS files
+        fs::file_move(row[["rds_src"]], row[["rds_tgt"]])
+
+        # Save cube RDS
+        saveRDS(row[["cube"]][[1]], row[["rds_src"]])
     })
 }
 

@@ -692,7 +692,7 @@ reclassify_rule19_perene <- function(cube, mask, multicores, memsize,
                                      output_dir, version, rarg_year,
                                      exclude_mask_na = FALSE) {
     # build args for expression
-    terraclass_years <- c(2008, 2010, 2012, 2014, 2018, 2020, 2022)
+    terraclass_years <- c(2008, 2010, 2012, 2014, 2018, 2020, 2022, 2024)
 
     if (!rarg_year %in% terraclass_years) {
         rules_expression <- bquote(
