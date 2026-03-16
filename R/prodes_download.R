@@ -271,6 +271,7 @@
                                  multicores = 1,
                                  memsize = 120,
                                  version = "v2",
+                                 nonforest_mask = TRUE,
                                  exclude_mask_na = FALSE) {
     # Sort years to ensure we are processing pairs: c(year, year + 1)
     years <- sort(years)
@@ -357,6 +358,79 @@
                 exclude_mask_na = exclude_mask_na
             )
         ))
+
+        # If required, mask non-forest
+        if (nonforest_mask) {
+            cli::cli_inform("> Processing {target_year} > Applying non-forest mask")
+
+            # Define current deforestation year label
+            current_deforestation_year <- paste0("d", year)
+
+            # Define output directory
+            output_dir_nonforest <- output_dir / "non-forest" / year
+
+            # Create output directory
+            fs::dir_create(output_dir_nonforest)
+
+            # Check non-forst file
+            nonforst_file <- .prodes_nonforest_output_file(
+                year       = year,
+                output_dir = output_dir_nonforest
+            )
+
+            if (!fs::file_exists(nonforst_file)) {
+                # Download non-forest data
+                prodes_nonforest <- .prodes_nonforest_download(output_dir_nonforest)
+
+                # Filter by year
+                prodes_nonforest <- prodes_nonforest |>
+                    dplyr::filter(.data[["year"]] <= !!year)
+
+                # Rasterize non-forest
+                .prodes_nonforest_rasterize(
+                    prodes        = prodes_nonforest,
+                    year          = year,
+                    output_dir    = output_dir_nonforest,
+                    class_id      = 1 # as this is yearly - it is ok to keep 1
+                )
+            }
+
+            # Load non-forest as cube
+            prodes_nonforest <- sits::sits_cube(
+                source     = "MPC",
+                collection = "LANDSAT-C2-L2",
+                bands      = "class",
+                tiles      = "MOSAIC",
+                multicores = multicores,
+                memsize    = memsize,
+                data_dir   = output_dir_nonforest,
+                labels     = c(
+                    "1"   = "CurrentDeforestation",
+                    "255" = "NoData"
+                )
+            )
+
+            # Build expression
+            rules_expression <- bquote(
+                list("DeforestationInNonForest" = mask == "CurrentDeforestation")
+            )
+
+            # Apply deforestation in non-forest areas
+            prodes_forest_mask <- eval(bquote(
+                sits::sits_reclassify(
+                    cube       = prodes_forest_mask,
+                    mask       = prodes_nonforest,
+                    rules      = .(rules_expression),
+                    multicores = multicores,
+                    memsize    = memsize,
+                    output_dir = output_dir,
+                    exclude_mask_na = exclude_mask_na,
+                    version    = "nonforest-mask"
+                )
+            ))
+
+            cli::cli_inform("> Processing {target_year} > Finalized non-forest mask")
+        }
 
         old_file <- prodes_next_year_orig[["file_info"]][[1]][["path"]]
         new_file <- prodes_forest_mask[["file_info"]][[1]][["path"]]
@@ -564,6 +638,7 @@ prepare_prodes <- function(
                 multicores = multicores,
                 memsize = memsize,
                 version = version,
+                nonforest_mask = nonforest_mask,
                 exclude_mask_na = exclude_mask_na
             )
         )
