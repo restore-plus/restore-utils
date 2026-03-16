@@ -24,8 +24,8 @@
 
     # List of dataset URLs
     urls <- c(
-        yearly_deforestation_nf           = "https://www.dropbox.com/scl/fi/rspgr74pi5lj9lgcy626q/yearly_deforestation_nf_biome.zip?rlkey=hyjrcpi04v5030ilxb78rbtsr&st=f18v6qki&dl=1",
-        residual_biome                    = "https://www.dropbox.com/scl/fi/rt7tgp4ur9dsgb5sggd2u/residual_nf_biome.zip?rlkey=451luaaui2x84jpa4q0lk5h86&st=4d882hup&dl=1",
+        yearly_deforestation_nf           = "https://terrabrasilis.dpi.inpe.br/download/dataset/amz-prodes/vector/yearly_deforestation_nf_biome.zip",
+        residual_biome                    = "https://terrabrasilis.dpi.inpe.br/download/dataset/amz-prodes/vector/residual_nf_biome.zip",
         accumulated_deforestation_2000_nf = "https://www.dropbox.com/scl/fi/vu9iazykmegj545nrtvjr/accumulated_deforestation_2000_nf_biome.zip?rlkey=bg01nny9j4qlvhpy60m6omsvd&st=xozk6t3j&dl=1"
     )
 
