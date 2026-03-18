@@ -361,7 +361,7 @@
 
         # If required, mask non-forest
         if (nonforest_mask) {
-            cli::cli_inform("> Processing {target_year} > Applying non-forest mask")
+            cli::cli_inform("> Processing {year} > Applying non-forest mask")
 
             # Define current deforestation year label
             current_deforestation_year <- paste0("d", year)
@@ -429,7 +429,7 @@
                 )
             ))
 
-            cli::cli_inform("> Processing {target_year} > Finalized non-forest mask")
+            cli::cli_inform("> Processing {year} > Finalized non-forest mask")
         }
 
         old_file <- prodes_next_year_orig[["file_info"]][[1]][["path"]]
