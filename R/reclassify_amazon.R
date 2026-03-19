@@ -1957,3 +1957,132 @@ reclassify_rule35_cropland_transitions <- function(files,
     # Return!
     return(out_file)
 }
+
+#' @export
+reclassify_rule36_wetlands_cleaning <- function(cube,
+                                                reference_mask,
+                                                roi,
+                                                multicores,
+                                                memsize,
+                                                output_dir,
+                                                version,
+                                                rarg_year,
+                                                exclude_mask_na = FALSE) {
+    # build args for expression
+    terraclass_years <- c(2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024)
+
+    stopifnot(all(sits::sits_labels(cube) %in% labels_amazon_mcti()))
+
+    if (rarg_year %in% terraclass_years) {
+        # Load currently TerraClass
+        tc <- get(paste0("load_terraclass_", rarg_year))
+        tc <- tc(
+            multicores = multicores,
+            memsize    = memsize
+        )
+        # Create a temporary version
+        temp_version <- paste0(version, "-temp")
+        temp_cube <- sits::sits_reclassify(
+            cube = cube,
+            mask = reference_mask,
+            rules = list(
+                "Invalid-Wetlands" = cube == "Sazonalmente inundada" &
+                    !(mask == "Sazonalmente inundada" | mask == "Água")
+            ),
+            exclude_mask_na = exclude_mask_na,
+            roi = roi,
+            multicores = multicores,
+            memsize = memsize,
+            output_dir = output_dir,
+            version = temp_version
+        )
+        # Apply rules for cleaning
+        rules_expression <- bquote(
+            list(
+                "Pastagem" = (
+                    cube == "Invalid-Wetlands" & (
+                        mask == "PASTAGEM ARBUSTIVA/ARBOREA" |
+                            mask == "PASTAGEM HERBACEA"
+                    )
+                ),
+                "Vegetação secundária" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "VEGETACAO NATURAL FLORESTAL SECUNDARIA"
+                ),
+                "Silvicultura" = (
+                    cube == "Invalid-Wetlands" & mask == "SILVICULTURA"
+                ),
+                "Agricultura semi-perene" = (
+                    cube == "Invalid-Wetlands" & mask == "CULTURA AGRICOLA SEMIPERENE"
+                ),
+                "Agricultura anual" = (
+                    cube == "Invalid-Wetland" & mask %in% c(
+                        "CULTURA AGRICOLA TEMPORARIA",
+                        "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                        "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO"
+                    )
+                )
+            )
+        )
+
+        # reclassify!
+        cube <- eval(bquote(
+            sits::sits_reclassify(
+                cube = temp_cube,
+                mask = tc,
+                rules = .(rules_expression),
+                exclude_mask_na = exclude_mask_na,
+                roi = roi,
+                multicores = multicores,
+                memsize = memsize,
+                output_dir = output_dir,
+                version = version
+            )
+        ))
+        # Delete temporary mask
+        fs::file_delete(temp_cube[["file_info"]][[1]][["path"]])
+    } else {
+        # Apply rules for cleaning
+        rules_expression <- bquote(
+            list(
+                "Pastagem" = (
+                    cube == "Sazonalmente inundada" &
+                        (mask == "Pastagem" | mask == "Desmatamento do ano")
+                ),
+                "Vegetação secundária" = (
+                    cube == "Sazonalmente inundada" &
+                        mask == "Vegetação secundária"
+                ),
+                "Silvicultura" = (
+                    cube == "Sazonalmente inundada" &
+                        mask == "Silvicultura"
+                ),
+                "Agricultura semi-perene" = (
+                    cube == "Sazonalmente inundada" &
+                        mask == "Agricultura semi-perene"
+                ),
+                "Agricultura anual" = (
+                    cube == "Sazonalmente inundada" &
+                        mask == "Agricultura anual"
+                )
+            )
+        )
+
+        # reclassify!
+        cube <- eval(bquote(
+            sits::sits_reclassify(
+                cube = cube,
+                mask = reference_mask,
+                rules = .(rules_expression),
+                exclude_mask_na = exclude_mask_na,
+                roi = roi,
+                multicores = multicores,
+                memsize = memsize,
+                output_dir = output_dir,
+                version = version
+            )
+        ))
+    }
+
+    .reclassify_save_rds(cube, output_dir, version)
+}
