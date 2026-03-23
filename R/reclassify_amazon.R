@@ -1999,6 +1999,9 @@ reclassify_rule36_wetlands_cleaning <- function(cube,
         # Apply rules for cleaning
         rules_expression <- bquote(
             list(
+                "Água" = c(
+                    cube == "Invalid-Wetlands" & mask == "CORPO DAGUA"
+                ),
                 "Pastagem" = (
                     cube == "Invalid-Wetlands" & (
                         mask == "PASTAGEM ARBUSTIVA/ARBOREA" |
@@ -2045,6 +2048,9 @@ reclassify_rule36_wetlands_cleaning <- function(cube,
         # Apply rules for cleaning
         rules_expression <- bquote(
             list(
+                "Água" = c(
+                    cube == "Sazonalmente inundada" & mask == "Água"
+                ),
                 "Pastagem" = (
                     cube == "Sazonalmente inundada" &
                         (mask == "Pastagem" | mask == "Desmatamento do ano")
