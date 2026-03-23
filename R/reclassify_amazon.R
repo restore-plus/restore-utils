@@ -2039,7 +2039,7 @@ reclassify_rule36_wetlands_cleaning <- function(cube,
                     cube == "Invalid-Wetlands" & mask == "CULTURA AGRICOLA SEMIPERENE"
                 ),
                 "Agricultura anual" = (
-                    cube == "Invalid-Wetland" & mask %in% c(
+                    cube == "Invalid-Wetlands" & mask %in% c(
                         "CULTURA AGRICOLA TEMPORARIA",
                         "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
                         "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO"
