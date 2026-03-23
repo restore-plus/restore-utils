@@ -1999,6 +1999,26 @@ reclassify_rule36_wetlands_cleaning <- function(cube,
         # Apply rules for cleaning
         rules_expression <- bquote(
             list(
+                "Área urbanizada" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "URBANIZADA"
+                ),
+                "Mineração" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "MINERACAO"
+                ),
+                "Agricultura Perene" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "CULTURA AGRICOLA PERENE"
+                ),
+                "Vegetação secundária" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "VEGETACAO NATURAL FLORESTAL SECUNDARIA"
+                ),
+                "Floresta" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "VEGETACAO NATURAL FLORESTAL PRIMARIA"
+                ),
                 "Água" = c(
                     cube == "Invalid-Wetlands" & mask == "CORPO DAGUA"
                 ),
