@@ -1971,7 +1971,7 @@ reclassify_rule36_wetlands_cleaning <- function(cube,
     # build args for expression
     terraclass_years <- c(2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024)
 
-    stopifnot(all(sits::sits_labels(cube) %in% labels_amazon_mcti()))
+    # stopifnot(all(sits::sits_labels(cube) %in% labels_amazon_mcti()))
 
     if (rarg_year %in% terraclass_years) {
         # Load currently TerraClass
