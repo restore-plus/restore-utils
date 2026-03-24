@@ -1783,7 +1783,7 @@ reclassify_rule34_cropland_consistency_tc <- function(cube,
                 "Pastagem" = (
                     cube == "Agricultura anual" & (
                         mask == "PASTAGEM ARBUSTIVA/ARBOREA" |
-                        mask == "PASTAGEM HERBACEA"
+                            mask == "PASTAGEM HERBACEA"
                     )
                 ),
                 "Vegetação secundária" = (
@@ -2110,5 +2110,91 @@ reclassify_rule36_wetlands_cleaning <- function(cube,
         ))
     }
 
+    .reclassify_save_rds(cube, output_dir, version)
+}
+
+#' @export
+reclassify_rule37_wetlands_remaining <- function(cube,
+                                                 reference_mask,
+                                                 roi,
+                                                 multicores,
+                                                 memsize,
+                                                 output_dir,
+                                                 version,
+                                                 rarg_year,
+                                                 exclude_mask_na = FALSE) {
+    if (rarg_year == 2024) {
+        # Apply rules for cleaning
+        rules_expression <- bquote(
+            list(
+                "Agricultura anual" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Agricultura anual"
+                ),
+                "Agricultura semi-perene" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Agricultura semi-perene"
+                ),
+                "Água" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "Água"
+                ),
+                "Floresta" = c(
+                    cube == "Invalid-Wetlands" &
+                        mask == "Floresta"
+                ),
+                "Silvicultura" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Silvicultura"
+                ),
+                "Vegetação secundária" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Vegetação secundária"
+                ),
+                "Mineração" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Mineração"
+                ),
+                "Área urbanizada" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Área urbanizada"
+                ),
+                "Natural não florestal" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Natural não florestal"
+                ),
+                "Pastagem" = (
+                    cube == "Invalid-Wetlands" &
+                        (mask == "Pastagem" | mask == "Desmatamento do ano")
+                ),
+                "Sazonalmente inundada" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Sazonalmente inundada"
+                ),
+                "Agricultura Perene" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Agricultura Perene"
+                ),
+                "Não observado" = (
+                    cube == "Invalid-Wetlands" &
+                        mask == "Não observado"
+                )
+            )
+        )
+        # reclassify!
+        cube <- eval(bquote(
+            sits::sits_reclassify(
+                cube = cube,
+                mask = reference_mask,
+                rules = .(rules_expression),
+                exclude_mask_na = exclude_mask_na,
+                roi = roi,
+                multicores = multicores,
+                memsize = memsize,
+                output_dir = output_dir,
+                version = version
+            )
+        ))
+    }
     .reclassify_save_rds(cube, output_dir, version)
 }
