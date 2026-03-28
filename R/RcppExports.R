@@ -57,6 +57,10 @@ C_trajectory_vs_analysis <- function(data, vs_class, pasture_class, target_class
     .Call(`_restoreutils_C_trajectory_vs_analysis`, data, vs_class, pasture_class, target_class)
 }
 
+C_trajectory_forest_bianual_consistency <- function(data_pyear, data_nyear, reference_class, fallback_class, excluded_values) {
+    .Call(`_restoreutils_C_trajectory_forest_bianual_consistency`, data_pyear, data_nyear, reference_class, fallback_class, excluded_values)
+}
+
 C_trajectory_temporal_consistency_reference <- function(data, reference_class, target_class) {
     .Call(`_restoreutils_C_trajectory_temporal_consistency_reference`, data, reference_class, target_class)
 }

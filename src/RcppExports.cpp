@@ -204,6 +204,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// C_trajectory_forest_bianual_consistency
+NumericMatrix C_trajectory_forest_bianual_consistency(NumericMatrix data_pyear, NumericMatrix data_nyear, int reference_class, int fallback_class, IntegerVector excluded_values);
+RcppExport SEXP _restoreutils_C_trajectory_forest_bianual_consistency(SEXP data_pyearSEXP, SEXP data_nyearSEXP, SEXP reference_classSEXP, SEXP fallback_classSEXP, SEXP excluded_valuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data_pyear(data_pyearSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type data_nyear(data_nyearSEXP);
+    Rcpp::traits::input_parameter< int >::type reference_class(reference_classSEXP);
+    Rcpp::traits::input_parameter< int >::type fallback_class(fallback_classSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type excluded_values(excluded_valuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(C_trajectory_forest_bianual_consistency(data_pyear, data_nyear, reference_class, fallback_class, excluded_values));
+    return rcpp_result_gen;
+END_RCPP
+}
 // C_trajectory_temporal_consistency_reference
 NumericMatrix C_trajectory_temporal_consistency_reference(NumericMatrix data, int reference_class, int target_class);
 RcppExport SEXP _restoreutils_C_trajectory_temporal_consistency_reference(SEXP dataSEXP, SEXP reference_classSEXP, SEXP target_classSEXP) {
@@ -247,6 +262,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_restoreutils_C_trajectory_water_analysis", (DL_FUNC) &_restoreutils_C_trajectory_water_analysis, 4},
     {"_restoreutils_C_trajectory_urban_analysis", (DL_FUNC) &_restoreutils_C_trajectory_urban_analysis, 5},
     {"_restoreutils_C_trajectory_vs_analysis", (DL_FUNC) &_restoreutils_C_trajectory_vs_analysis, 4},
+    {"_restoreutils_C_trajectory_forest_bianual_consistency", (DL_FUNC) &_restoreutils_C_trajectory_forest_bianual_consistency, 5},
     {"_restoreutils_C_trajectory_temporal_consistency_reference", (DL_FUNC) &_restoreutils_C_trajectory_temporal_consistency_reference, 3},
     {"_restoreutils_C_validation_compare_versions", (DL_FUNC) &_restoreutils_C_validation_compare_versions, 4},
     {NULL, NULL, 0}

@@ -417,3 +417,36 @@ NumericMatrix C_trajectory_vs_analysis(NumericMatrix data, int vs_class, Integer
     return data;
 }
 
+// [[Rcpp::export]]
+NumericMatrix C_trajectory_forest_bianual_consistency(NumericMatrix data_pyear, NumericMatrix data_nyear, int reference_class, int fallback_class, IntegerVector excluded_values) {
+    int npixel = data_nyear.nrow();
+    int nyear = data_nyear.ncol();
+
+    if (nyear != 2) {
+        stop("Expected at 2 years (columns), but got " + std::to_string(nyear));
+    }
+
+    for (int i = 0; i < npixel; i++) {
+        for (int j = 0; j < nyear; j++) {
+            int p_year_value = data_pyear(i, j); // previous year
+            int n_year_value = data_nyear(i, j); // next year
+
+            // se em 2022 não for floresta
+            if (p_year_value != reference_class) {
+
+                // Se o valor de 2022 for excluído (e.g., desmatamento), usa "classe padrão" em 2023s
+                bool is_excluded = std::find(excluded_values.begin(), excluded_values.end(), p_year_value) != excluded_values.end();
+                if (is_excluded) {
+                    data_nyear(i, j) = fallback_class;
+                }
+
+                // e em 2023 for floresta, então muda 2023 para a classe de 2022
+                if (n_year_value == reference_class && !is_excluded) {
+                    data_nyear(i, j) = data_pyear(i, j);
+                }
+            }
+        }
+    }
+
+    return data_nyear;
+}
