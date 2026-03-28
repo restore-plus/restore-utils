@@ -422,9 +422,9 @@ NumericMatrix C_trajectory_forest_bianual_consistency(NumericMatrix data_pyear, 
     int npixel = data_nyear.nrow();
     int nyear = data_nyear.ncol();
 
-    if (nyear != 2) {
-        stop("Expected at 2 years (columns), but got " + std::to_string(nyear));
-    }
+    // if (nyear != 2) {
+    //     stop("Expected at 2 years (columns), but got " + std::to_string(nyear));
+    // }
 
     for (int i = 0; i < npixel; i++) {
         for (int j = 0; j < nyear; j++) {
