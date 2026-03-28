@@ -2288,9 +2288,10 @@ reclassify_rule38_forest_bianual_consistency <- function(files,
         }
         # Read raster values
         values <- sits:::.raster_read_rast(files = files, block = block)
+        n <- ncol(values)
         values <- restoreutils:::C_trajectory_forest_bianual_consistency(
-            data_pyear = values[,1],
-            data_nyear = values[,2],
+            data_pyear = values[, 1:(n - 1), drop = FALSE],
+            data_nyear = values[, 2:n, drop = FALSE],
             reference_class = forest_id,
             fallback_class = pasture_id,
             excluded_values = excluded_class_ids
