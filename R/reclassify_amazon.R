@@ -2200,7 +2200,7 @@ reclassify_rule37_wetlands_remaining <- function(cube,
 }
 
 #' @export
-reclassify_rule38_cropland_transitions <- function(files,
+reclassify_rule38_forest_bianual_consistency <- function(files,
                                                    forest_id,
                                                    pasture_id,
                                                    excluded_class_ids,
