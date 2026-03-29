@@ -2389,9 +2389,9 @@ reclassify_rule39_perene_scatter_control <- function(files,
     # Update chunk to save extra information
     chunks[["files"]] <- rep(list(files), nrow(chunks))
     chunks[["out_filename"]] <- out_filename
-    chunks[["class_a"]] <- class_a
-    chunks[["class_b"]] <- class_b
-    chunks[["class_c"]] <- class_c
+    chunks[["class_a"]] <- rep(list(class_a), nrow(chunks))
+    chunks[["class_b"]] <- rep(list(class_b), nrow(chunks))
+    chunks[["class_c"]] <- rep(list(class_c), nrow(chunks))
     chunks[["replace_by"]] <- replace_by
     # Start workers
     sits:::.parallel_start(workers = multicores)
@@ -2403,9 +2403,9 @@ reclassify_rule39_perene_scatter_control <- function(files,
         # Get extra context defined by restoreutils
         files <- chunk[["files"]][[1]]
         out_filename <- chunk[["out_filename"]]
-        class_a <- chunk[["class_a"]]
-        class_b <- chunk[["class_b"]]
-        class_c <- chunk[["class_c"]]
+        class_a <- chunk[["class_a"]][[1]]
+        class_b <- chunk[["class_b"]][[1]]
+        class_c <- chunk[["class_c"]][[1]]
         replace_by <- chunk[["replace_by"]]
         # Define block file name / path
         block_file <- sits:::.file_block_name(
