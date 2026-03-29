@@ -219,6 +219,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// C_trajectory_triplet_behavior
+NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, int class_a, int class_b, int class_c);
+RcppExport SEXP _restoreutils_C_trajectory_triplet_behavior(SEXP dataSEXP, SEXP class_aSEXP, SEXP class_bSEXP, SEXP class_cSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type class_a(class_aSEXP);
+    Rcpp::traits::input_parameter< int >::type class_b(class_bSEXP);
+    Rcpp::traits::input_parameter< int >::type class_c(class_cSEXP);
+    rcpp_result_gen = Rcpp::wrap(C_trajectory_triplet_behavior(data, class_a, class_b, class_c));
+    return rcpp_result_gen;
+END_RCPP
+}
 // C_trajectory_temporal_consistency_reference
 NumericMatrix C_trajectory_temporal_consistency_reference(NumericMatrix data, int reference_class, int target_class);
 RcppExport SEXP _restoreutils_C_trajectory_temporal_consistency_reference(SEXP dataSEXP, SEXP reference_classSEXP, SEXP target_classSEXP) {
@@ -263,6 +277,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_restoreutils_C_trajectory_urban_analysis", (DL_FUNC) &_restoreutils_C_trajectory_urban_analysis, 5},
     {"_restoreutils_C_trajectory_vs_analysis", (DL_FUNC) &_restoreutils_C_trajectory_vs_analysis, 4},
     {"_restoreutils_C_trajectory_forest_bianual_consistency", (DL_FUNC) &_restoreutils_C_trajectory_forest_bianual_consistency, 5},
+    {"_restoreutils_C_trajectory_triplet_behavior", (DL_FUNC) &_restoreutils_C_trajectory_triplet_behavior, 4},
     {"_restoreutils_C_trajectory_temporal_consistency_reference", (DL_FUNC) &_restoreutils_C_trajectory_temporal_consistency_reference, 3},
     {"_restoreutils_C_validation_compare_versions", (DL_FUNC) &_restoreutils_C_validation_compare_versions, 4},
     {NULL, NULL, 0}

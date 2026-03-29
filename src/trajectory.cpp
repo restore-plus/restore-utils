@@ -450,3 +450,29 @@ NumericMatrix C_trajectory_forest_bianual_consistency(NumericMatrix data_pyear, 
 
     return data_nyear;
 }
+
+
+// [[Rcpp::export]]
+NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, int class_a, int class_b, int class_c) {
+    int npixel = data.nrow();
+    int nyear = data.ncol();
+
+    if (nyear < 3) {
+        stop("Expected at least 3 years (columns), but got " + std::to_string(nyear));
+    }
+
+    for (int i = 0; i < npixel; i++) {
+        for (int j = 1; j < nyear - 1; j++) {
+
+            bool is_left_valid = data(i, j - 1) == class_a;
+            bool is_middle_valid = data(i, j) == class_b;
+            bool is_right_valid = data(i, j + 1) == class_c;
+
+            if (is_left_valid && is_middle_valid && is_right_valid) {
+                data(i, j) = data(i, j - 1);
+            }
+        }
+    }
+
+    return data;
+}
