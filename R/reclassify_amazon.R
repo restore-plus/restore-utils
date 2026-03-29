@@ -2331,6 +2331,7 @@ reclassify_rule39_perene_scatter_control <- function(files,
                                                      class_a,
                                                      class_b,
                                                      class_c,
+                                                     replace_by = -1L,
                                                      version,
                                                      year,
                                                      multicores,
@@ -2391,6 +2392,7 @@ reclassify_rule39_perene_scatter_control <- function(files,
     chunks[["class_a"]] <- class_a
     chunks[["class_b"]] <- class_b
     chunks[["class_c"]] <- class_c
+    chunks[["replace_by"]] <- replace_by
     # Start workers
     sits:::.parallel_start(workers = multicores)
     on.exit(sits:::.parallel_stop(), add = TRUE)
@@ -2404,6 +2406,7 @@ reclassify_rule39_perene_scatter_control <- function(files,
         class_a <- chunk[["class_a"]]
         class_b <- chunk[["class_b"]]
         class_c <- chunk[["class_c"]]
+        replace_by <- chunk[["replace_by"]]
         # Define block file name / path
         block_file <- sits:::.file_block_name(
             pattern = tools::file_path_sans_ext(out_filename),
@@ -2420,7 +2423,8 @@ reclassify_rule39_perene_scatter_control <- function(files,
             data = values,
             class_a = class_a,
             class_b = class_b,
-            class_c = class_c
+            class_c = class_c,
+            replace_by = replace_by
         )
         # Prepare and save results as raster
         sits:::.raster_write_block(

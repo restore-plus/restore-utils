@@ -220,16 +220,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // C_trajectory_triplet_behavior
-NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, int class_a, int class_b, int class_c);
-RcppExport SEXP _restoreutils_C_trajectory_triplet_behavior(SEXP dataSEXP, SEXP class_aSEXP, SEXP class_bSEXP, SEXP class_cSEXP) {
+NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, IntegerVector class_a, IntegerVector class_b, IntegerVector class_c, int replace_by);
+RcppExport SEXP _restoreutils_C_trajectory_triplet_behavior(SEXP dataSEXP, SEXP class_aSEXP, SEXP class_bSEXP, SEXP class_cSEXP, SEXP replace_bySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< int >::type class_a(class_aSEXP);
-    Rcpp::traits::input_parameter< int >::type class_b(class_bSEXP);
-    Rcpp::traits::input_parameter< int >::type class_c(class_cSEXP);
-    rcpp_result_gen = Rcpp::wrap(C_trajectory_triplet_behavior(data, class_a, class_b, class_c));
+    Rcpp::traits::input_parameter< IntegerVector >::type class_a(class_aSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type class_b(class_bSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type class_c(class_cSEXP);
+    Rcpp::traits::input_parameter< int >::type replace_by(replace_bySEXP);
+    rcpp_result_gen = Rcpp::wrap(C_trajectory_triplet_behavior(data, class_a, class_b, class_c, replace_by));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -277,7 +278,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_restoreutils_C_trajectory_urban_analysis", (DL_FUNC) &_restoreutils_C_trajectory_urban_analysis, 5},
     {"_restoreutils_C_trajectory_vs_analysis", (DL_FUNC) &_restoreutils_C_trajectory_vs_analysis, 4},
     {"_restoreutils_C_trajectory_forest_bianual_consistency", (DL_FUNC) &_restoreutils_C_trajectory_forest_bianual_consistency, 5},
-    {"_restoreutils_C_trajectory_triplet_behavior", (DL_FUNC) &_restoreutils_C_trajectory_triplet_behavior, 4},
+    {"_restoreutils_C_trajectory_triplet_behavior", (DL_FUNC) &_restoreutils_C_trajectory_triplet_behavior, 5},
     {"_restoreutils_C_trajectory_temporal_consistency_reference", (DL_FUNC) &_restoreutils_C_trajectory_temporal_consistency_reference, 3},
     {"_restoreutils_C_validation_compare_versions", (DL_FUNC) &_restoreutils_C_validation_compare_versions, 4},
     {NULL, NULL, 0}

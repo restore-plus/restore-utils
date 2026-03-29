@@ -61,8 +61,8 @@ C_trajectory_forest_bianual_consistency <- function(data_pyear, data_nyear, refe
     .Call(`_restoreutils_C_trajectory_forest_bianual_consistency`, data_pyear, data_nyear, reference_class, fallback_class, excluded_values)
 }
 
-C_trajectory_triplet_behavior <- function(data, class_a, class_b, class_c) {
-    .Call(`_restoreutils_C_trajectory_triplet_behavior`, data, class_a, class_b, class_c)
+C_trajectory_triplet_behavior <- function(data, class_a, class_b, class_c, replace_by = -1L) {
+    .Call(`_restoreutils_C_trajectory_triplet_behavior`, data, class_a, class_b, class_c, replace_by)
 }
 
 C_trajectory_temporal_consistency_reference <- function(data, reference_class, target_class) {

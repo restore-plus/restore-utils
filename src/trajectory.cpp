@@ -453,7 +453,7 @@ NumericMatrix C_trajectory_forest_bianual_consistency(NumericMatrix data_pyear, 
 
 
 // [[Rcpp::export]]
-NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, int class_a, int class_b, int class_c) {
+NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, IntegerVector class_a, IntegerVector class_b, IntegerVector class_c, int replace_by = -1) {
     int npixel = data.nrow();
     int nyear = data.ncol();
 
@@ -461,15 +461,22 @@ NumericMatrix C_trajectory_triplet_behavior(NumericMatrix data, int class_a, int
         stop("Expected at least 3 years (columns), but got " + std::to_string(nyear));
     }
 
+    if (replace_by < -1 || replace_by > 1) {
+        stop("replace_by must be -1 (left), 0 (middle), or 1 (right)");
+    }
+
     for (int i = 0; i < npixel; i++) {
         for (int j = 1; j < nyear - 1; j++) {
+            int left_val = data(i, j - 1);
+            int middle_val = data(i, j);
+            int right_val = data(i, j + 1);
 
-            bool is_left_valid = data(i, j - 1) == class_a;
-            bool is_middle_valid = data(i, j) == class_b;
-            bool is_right_valid = data(i, j + 1) == class_c;
+            bool is_left_valid = std::find(class_a.begin(), class_a.end(), left_val) != class_a.end();
+            bool is_middle_valid = std::find(class_b.begin(), class_b.end(), middle_val) != class_b.end();
+            bool is_right_valid = std::find(class_c.begin(), class_c.end(), right_val) != class_c.end();
 
             if (is_left_valid && is_middle_valid && is_right_valid) {
-                data(i, j) = data(i, j - 1);
+                data(i, j) = data(i, j + replace_by);
             }
         }
     }
