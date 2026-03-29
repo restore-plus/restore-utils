@@ -2332,6 +2332,7 @@ reclassify_rule39_perene_scatter_control <- function(files,
                                                      class_b,
                                                      class_c,
                                                      version,
+                                                     year,
                                                      multicores,
                                                      memsize,
                                                      output_dir) {
