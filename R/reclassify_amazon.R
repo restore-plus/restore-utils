@@ -2420,7 +2420,7 @@ reclassify_rule39_perene_scatter_control <- function(files,
             data = values,
             class_a = class_a,
             class_b = class_b,
-            class_c = class_c,
+            class_c = class_c
         )
         # Prepare and save results as raster
         sits:::.raster_write_block(
