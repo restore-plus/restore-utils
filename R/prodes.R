@@ -1569,7 +1569,7 @@ load_prodes_2024 <- function(version = "v2", multicores = 32, memsize = 120) {
 
 #' @export
 load_prodes_2025 <- function(version = "v2", multicores = 32, memsize = 120) {
-    prodes_dir <- .prodes_dir(version = version, year = 2024)
+    prodes_dir <- .prodes_dir(version = version, year = 2025)
     prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {
