@@ -451,6 +451,50 @@ load_terraclass_2020 <- function(version = "v1", multicores = 32, memsize = 120)
 }
 
 #' @export
+load_terraclass_cerrado_2020 <- function(version = "v1", multicores = 32, memsize = 120) {
+    terraclass_dir <- .terraclass_dir(version, 2020)
+    terraclass_rds <- .terraclass_rds(terraclass_dir)
+
+    if (fs::file_exists(terraclass_rds)) {
+
+        terraclass <- readRDS(terraclass_rds)
+
+    } else {
+
+        terraclass <- sits::sits_cube(
+            source = "MPC",
+            collection = "LANDSAT-C2-L2",
+            data_dir = terraclass_dir,
+            multicores = multicores,
+            memsize = memsize,
+            parse_info = c("satellite", "sensor",
+                           "tile", "start_date", "end_date",
+                           "band", "version"),
+            bands = "class",
+            labels = c("1" = "VEGETACAO NATURAL PRIMARIA",
+                       "2" = "VEGETACAO NATURAL SECUNDARIA",
+                       "9" = "SILVICULTURA",
+                       "11" = "PASTAGEM",
+                       "12" = "CULTURA AGRICOLA PERENE",
+                       "13" = "CULTURA AGRICOLA SEMIPERENE",
+                       "14" = "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                       "15" = "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO",
+                       "16" = "MINERACAO",
+                       "17" = "URBANIZADA",
+                       "20" = "OUTROS USOS",
+                       "21" = "OUTRAS ÁREAS EDIFICADAS",
+                       "22" = "DESFLORESTAMENTO NO ANO",
+                       "23" = "CORPO DAGUA",
+                       "25" = "NAO OBSERVADO"
+            )
+        )
+
+        saveRDS(terraclass, terraclass_rds)
+    }
+    terraclass
+}
+
+#' @export
 load_terraclass_2022 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2022)
     terraclass_rds <- .terraclass_rds(terraclass_dir)

@@ -14,7 +14,6 @@ License: GPL-2 + file LICENSE
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 ByteCompile: true
 LazyData: true
 Imports:
@@ -78,3 +77,4 @@ Collate:
     'vegetation_map.R'
     'water_mask.R'
     'zzz.R'
+Config/roxygen2/version: 8.0.0
