@@ -46,6 +46,7 @@ Collate:
     'files.R'
     'flux.R'
     'gdal_merge_aws.R'
+    'gdal_utils.R'
     'gdal_rasterize.R'
     'gdal_rat.R'
     'geometry_utils.R'
