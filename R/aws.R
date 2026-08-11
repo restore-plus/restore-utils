@@ -96,9 +96,7 @@ aws_download <- function(file, version, year, output_dir) {
 #' @param year       Integer or character with the year used in the output path and filename.
 #'
 #' @returns Character with file name.
-#'
-#' @export
-aws_build_filename_cerrado <- function(version, year) {
+.aws_build_filename_classification_cerrado <- function(version, year) {
     # Convert to numeric
     year <- as.numeric(year)
     # Create start and end dates
@@ -111,5 +109,34 @@ aws_build_filename_cerrado <- function(version, year) {
     )
 
     # Return!
-    return(filename)
+    return(fs::path(filename))
+}
+
+#' @title Build AWS URL path for Cerrado
+#'
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#'
+#' @description Builds AWS URL for Cerrado in Restore-plus S3
+#'
+#' @param version    Character with the version label used in the output path (e.g. \code{"v1"}).
+#' @param year       Integer or character with the year used in the output path and filename.
+#'
+#' @returns Character with URL classification file.
+#'
+#' @export
+aws_build_url_classification_cerrado <- function(version, year) {
+    # Build file name
+    filename <- .aws_build_filename_classification_cerrado(
+        version = version, year = year
+    )
+
+    # Define base path
+    path <- "https://restore-plus.s3.us-east-1.amazonaws.com/maps/lulcbrasil/cer/%s/%s"
+
+    # Create url path
+    path <- sprintf(path, version, filename)
+
+    # Return!
+    return(path)
 }
