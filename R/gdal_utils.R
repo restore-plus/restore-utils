@@ -13,7 +13,7 @@ gdal_addo <- function(cube) {
     files <- dplyr::bind_rows(cube[["file_info"]])
 
     # Add overviews into tiff files
-    purrr::map_chr(files[["path"]], sf::gdal_addo)
+    purrr::map(files[["path"]], sf::gdal_addo)
 
     # Return !
     return(invisible(files))

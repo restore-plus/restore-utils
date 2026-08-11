@@ -1,4 +1,3 @@
-
 .terraclass_files <- function() {
     dplyr::bind_rows(
         .terraclass_files_amazon(),
