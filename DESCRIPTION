@@ -73,6 +73,7 @@ Collate:
     'sankey_utils.R'
     'terraclass.R'
     'terraclass_download.R'
+    'terraclass_prepare_amazon.R'
     'val_crosstable.R'
     'val_versions.R'
     'vegetation_map.R'

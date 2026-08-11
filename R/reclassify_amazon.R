@@ -1975,7 +1975,7 @@ reclassify_amazon_rule36_wetlands_cleaning <- function(cube,
 
     if (rarg_year %in% terraclass_years) {
         # Load currently TerraClass
-        tc <- get(paste0("load_terraclass_", rarg_year))
+        tc <- get(paste0("load_terraclass_amazon_", rarg_year))
         tc <- tc(
             multicores = multicores,
             memsize    = memsize
