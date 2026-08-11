@@ -43,12 +43,13 @@ labels_cerrado_classification <- function() {
         "1"  = "Agricultura anual",
         "2"  = "Cerradao",
         "3"  = "Cerrado",
-        "4"  = "Natural Não-Vegetal",
-        "5"  = "Open-Cerrado",
-        "6"  = "Pasto",
-        "7"  = "Agricultura Perene",
-        "8"  = "Silvicultura",
-        "9"  = "Cana",
-        "10" = "Água"
+        "4"  = "Mangue",
+        "5"  = "Natural Não-Vegetal",
+        "6"  = "Open-Cerrado",
+        "7"  = "Pasto",
+        "8"  = "Agricultura Perene",
+        "9"  = "Silvicultura",
+        "10" = "Cana",
+        "11" = "Água"
     )
 }
