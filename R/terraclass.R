@@ -10,7 +10,7 @@
 }
 
 #' @export
-load_terraclass_2004 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2004 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2004)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -56,7 +56,7 @@ load_terraclass_2004 <- function(version = "v1", multicores = 32, memsize = 120)
 }
 
 #' @export
-load_terraclass_2008 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2008 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2008)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -101,7 +101,7 @@ load_terraclass_2008 <- function(version = "v1", multicores = 32, memsize = 120)
 }
 
 #' @export
-load_terraclass_2012 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2012 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2012)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -146,7 +146,7 @@ load_terraclass_2012 <- function(version = "v1", multicores = 32, memsize = 120)
 }
 
 #' @export
-load_terraclass_2010 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2010 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2010)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -191,7 +191,7 @@ load_terraclass_2010 <- function(version = "v1", multicores = 32, memsize = 120)
 }
 
 #' @export
-load_terraclass_2014 <- function(version = "v1", multicores = 32, memsize = 120, use_original = FALSE) {
+load_terraclass_amazon_2014 <- function(version = "v1", multicores = 32, memsize = 120, use_original = FALSE) {
     # Define default directory
     terraclass_dir <- .terraclass_dir(version, 2014)
 
@@ -268,7 +268,7 @@ load_terraclass_2014 <- function(version = "v1", multicores = 32, memsize = 120,
 }
 
 #' @export
-load_terraclass_2016 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2016 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2016)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -314,7 +314,7 @@ load_terraclass_2016 <- function(version = "v1", multicores = 32, memsize = 120)
 }
 
 #' @export
-load_terraclass_2018 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2018 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2018)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -405,7 +405,7 @@ load_terraclass_cerrado_2018 <- function(version = "v1", multicores = 32, memsiz
 }
 
 #' @export
-load_terraclass_2020 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2020 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir_2020 <- .terraclass_dir(version, 2020)
     terraclass_rds_2020 <- .terraclass_rds(terraclass_dir_2020)
 
@@ -495,7 +495,7 @@ load_terraclass_cerrado_2020 <- function(version = "v1", multicores = 32, memsiz
 }
 
 #' @export
-load_terraclass_2022 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2022 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2022)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
@@ -583,7 +583,7 @@ load_terraclass_cerrado_2022 <- function(version = "v1", multicores = 32, memsiz
 }
 
 #' @export
-load_terraclass_2024 <- function(version = "v1", multicores = 32, memsize = 120) {
+load_terraclass_amazon_2024 <- function(version = "v1", multicores = 32, memsize = 120) {
     terraclass_dir <- .terraclass_dir(version, 2024)
     terraclass_rds <- .terraclass_rds(terraclass_dir)
 
