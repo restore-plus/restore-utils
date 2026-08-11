@@ -84,3 +84,32 @@ aws_download <- function(file, version, year, output_dir) {
     # Return!
     return(output_file)
 }
+
+#' @title Build AWS file name for Cerrado
+#'
+#' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
+#' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
+#'
+#' @description Builds file name for Cerrado in Restore-plus S3
+#'
+#' @param version    Character with the version label used in the output path (e.g. \code{"v1"}).
+#' @param year       Integer or character with the year used in the output path and filename.
+#'
+#' @returns Character with file name.
+#'
+#' @export
+aws_build_filename_cerrado <- function(version, year) {
+    # Convert to numeric
+    year <- as.numeric(year)
+    # Create start and end dates
+    start_date <- glue::glue("{year}-01-01")
+    end_date <- glue::glue("{year + 1}-12-31")
+
+    # Build file name
+    filename <- glue::glue(
+        "lulcbrasil_30m_cer_{start_date}_{end_date}_class_{version}.tif"
+    )
+
+    # Return!
+    return(filename)
+}
