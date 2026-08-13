@@ -93,10 +93,6 @@ reclassify_cer_rule1_veg <- function(cube, mask, multicores, memsize, output_dir
 #' @export
 reclassify_cer_rule3_agr_anual <- function(cube, mask, multicores, memsize, output_dir, version, rarg_year, exclude_mask_na = FALSE) {
 
-    if (rarg_year < 2018) {
-        return(cube)
-    }
-
     cube <- sits::sits_reclassify(
         cube = cube,
         mask = mask,
@@ -118,10 +114,6 @@ reclassify_cer_rule3_agr_anual <- function(cube, mask, multicores, memsize, outp
 #' @export
 reclassify_cer_rule4_semi_perene <- function(cube, mask, multicores, memsize, output_dir, version, rarg_year, exclude_mask_na = FALSE) {
 
-    if (rarg_year < 2018) {
-        return(cube)
-    }
-
     cube <- sits::sits_reclassify(
         cube = cube,
         mask = mask,
@@ -141,10 +133,6 @@ reclassify_cer_rule4_semi_perene <- function(cube, mask, multicores, memsize, ou
 #' @export
 reclassify_cer_rule5_perene <- function(cube, mask, multicores, memsize, output_dir, version, rarg_year, exclude_mask_na = FALSE) {
 
-    if (rarg_year < 2018) {
-        return(cube)
-    }
-
     cube <- sits::sits_reclassify(
         cube = cube,
         mask = mask,
@@ -163,10 +151,6 @@ reclassify_cer_rule5_perene <- function(cube, mask, multicores, memsize, output_
 
 #' @export
 reclassify_cer_rule6_silviculture <- function(cube, mask, multicores, memsize, output_dir, version, rarg_year, exclude_mask_na = FALSE) {
-
-    if (rarg_year < 2018) {
-        return(cube)
-    }
 
     cube <- sits::sits_reclassify(
         cube = cube,
