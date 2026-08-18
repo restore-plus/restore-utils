@@ -404,8 +404,8 @@ reclassify_amazon_rule13_temporal_trajectory_perene <- function(files,
     chunks[["vs_class_id"]] <- vs_class_id
     chunks[["perene_class_id"]] <- perene_class_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -531,8 +531,8 @@ reclassify_amazon_rule14_temporal_neighbor_perene <- function(files,
     chunks[["perene_class_id"]] <- perene_class_id
     chunks[["replacement_class_id"]] <- replacement_class_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -798,8 +798,8 @@ reclassify_amazon_rule20_temporal_trajectory_urban <- function( files,
     chunks[["forest_class_id"]] <- forest_class_id
     chunks[["forest_class_id_mask"]] <- forest_class_id_mask
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -967,8 +967,8 @@ reclassify_amazon_rule22_temporal_annual_agriculture <- function(files,
     chunks[["annual_agriculture_class_id"]] <- annual_agriculture_class_id
     chunks[["target_class_map"]] <- rep(list(target_class_map), nrow(chunks))
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -1126,8 +1126,8 @@ reclassify_amazon_rule24_temporal_water_consistency <- function(files,
     }
     chunks[["excluded_values"]] <- rep(list(excluded_values), nrow(chunks))
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -1293,8 +1293,8 @@ reclassify_amazon_rule27_temporal_trajectory_perene_mask <- function(files,
     chunks[["perene_class_id"]] <- perene_class_id
     chunks[["perene_mask_class_id"]] <- perene_mask_class_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -1506,8 +1506,8 @@ reclassify_amazon_rule29_temporal_trajectory_vs_pasture <- function(files,
     chunks[["pasture_class_id"]] <- pasture_class_id
     chunks[["target_class_id"]] <- target_class_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -1663,8 +1663,8 @@ reclassify_amazon_rule31_cropand_pasture <- function(files,
     chunks[["annual_agriculture_class_id"]] <- annual_agriculture_class_id
     chunks[["target_class"]] <- target_class
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -1892,8 +1892,8 @@ reclassify_amazon_rule35_cropland_transitions <- function(files,
     chunks[["cropland_id"]] <- cropland_id
     chunks[["pasture_id"]] <- pasture_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -2264,8 +2264,8 @@ reclassify_amazon_rule38_forest_bianual_consistency <- function(files,
     chunks[["forest_id"]] <- forest_id
     chunks[["pasture_id"]] <- pasture_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -2394,8 +2394,8 @@ reclassify_amazon_rule39_perene_scatter_control <- function(files,
     chunks[["class_c"]] <- rep(list(class_c), nrow(chunks))
     chunks[["replace_by"]] <- replace_by
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block

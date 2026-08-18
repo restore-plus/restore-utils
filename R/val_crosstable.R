@@ -1,8 +1,8 @@
 #' @title Map user-defined area unit to conversion factor from km² (default raster area unit)
-#' 
+#'
 #' @author Felipe Carlos, \email{efelipecarlos@@gmail.com}
 #' @author Felipe Carvalho, \email{felipe.carvalho@@inpe.br}
-#' 
+#'
 #' @param unit Character specifying the area unit. One of
 #'             \code{"ha"} (hectares, default), \code{"km2"}
 #'             (square kilometers), or \code{"m2"} (square meters).
@@ -125,8 +125,8 @@ crosstable_area <- function(map, ref, output_dir, unit = "ha",
     chunks[["area_factor"]] <- area_factor
     chunks[["output_file"]] <- output_file
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     data <- sits:::.jobs_map_parallel_dfr(chunks, function(chunk) {
         # Get job block
@@ -386,8 +386,8 @@ crosstable <- function(map, ref, output_dir, multicores = 10, memsize = 16, roi 
     chunks[["map"]] <- map
     chunks[["ref"]]  <- ref
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     data <- sits:::.jobs_map_parallel_dfr(chunks, function(chunk) {
         # Get job block

@@ -18,7 +18,7 @@
 #' @param output_dir      Character path for the output directory.
 #'
 #' @returns A character specifying the output file.
-#' 
+#'
 #' @export
 validation_compare_versions <- function(file, file_mask, year, target_class_id, target_class_id_mask, version, multicores = 10, memsize = 16, output_dir) {
     # Create output directory
@@ -77,8 +77,8 @@ validation_compare_versions <- function(file, file_mask, year, target_class_id, 
     chunks[["target_class_id"]] <- target_class_id
     chunks[["target_class_id_mask"]] <- target_class_id_mask
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
