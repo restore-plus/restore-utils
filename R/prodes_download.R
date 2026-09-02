@@ -659,7 +659,7 @@ prepare_prodes <- function(
         # Mask fixed in 2024 as this is the reference in the restore+ project
         prepare_prodes_nf(
             region_id  = region_id,
-            year       = 2024,
+            year       = 2025,
             multicores = multicores,
             memsize    = memsize,
             version    = "nf"
@@ -667,7 +667,7 @@ prepare_prodes <- function(
     }
 
     # List of cropped years
-    years_to_crop <- Map(\(x) x <= 2007 || x == 2024, years)
+    years_to_crop <- Map(\(x) x <= 2007 || x %in% c(2024, 2025), years)
 
     # Processing each year
     purrr::map(seq_len(length(years_to_crop)), function(idx) {
@@ -691,7 +691,7 @@ prepare_prodes <- function(
         }
 
         # If year is greater or equal to 2024, skip mask generation
-        if (year >= 2024) {
+        if (year >= 2025) {
             return(NULL)
         }
 
