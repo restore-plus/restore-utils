@@ -84,9 +84,9 @@ prepare_terraclass_amazon <- function(years, region_id, fix_non_observed = TRUE,
     })
     # Add non-forest into terraclass 2024
     if (add_non_forest) {
-        if (2024 %in% years) {
+        if (2025 %in% years) {
             # Load PRODES mask
-            mask <- load_prodes_2024(
+            mask <- load_prodes_2025(
                 multicores = multicores, memsize = memsize
             )
             # Creating cube
