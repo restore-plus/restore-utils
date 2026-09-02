@@ -1,7 +1,9 @@
 
 .prodes_files <- function() {
     base_files <- c(
+        "https://www.dropbox.com/scl/fi/g0b3smlait1pvxsgn14q8/prodes_amazonia_legal_2025_v20260408.zip?rlkey=vq0nr9p4splxabuil4xdj9en4&dl=1",
         "https://www.dropbox.com/scl/fi/dfb8f8q7ebetlc4g6ez6n/prodes_amazonia_legal_2024.zip?rlkey=ue9n4i5gsqyjp3jmpw9jeos64&dl=1",
+        "https://www.dropbox.com/scl/fi/dz6nt4i3i6gmrr273p9jr/prodes_amazonia_2025_v20260407.zip?rlkey=idnrf91l4sbumfv8kdnun5667&dl=1",
         "https://www.dropbox.com/scl/fi/qfbx8cco2mv13ysutestq/prodes_amazonia_2024.zip?rlkey=w6bhzqpenx7s29zhxxa6reeio&dl=1",
         "https://www.dropbox.com/scl/fi/r5rza5i0284p3682itwfh/prodes_amazonia_2000.zip?rlkey=jkwyj56clsy92sqd76glxf0wp&dl=1",
         "https://www.dropbox.com/scl/fi/6lg8ec2d41q97b8f67gfp/prodes_amazonia_2001.zip?rlkey=sjn0iag7wj1umeftv43me1dvl&dl=1",
@@ -16,8 +18,8 @@
     base_tbl <- tibble::tibble(
         file = base_files,
         base = "prodes",
-        type = c("nf", rep("map", 9)),
-        year = c(2024, 2024, 2000:2007)
+        type = c("nf", "nf", rep("map", 10)),
+        year = c(2025, 2024, 2025, 2024, 2000:2007)
     )
 
     years <- 2000:2022
