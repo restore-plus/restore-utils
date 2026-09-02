@@ -523,12 +523,12 @@ download_prodes <- function(year, output_dir, version = "v2") {
 
 #' @export
 prepare_prodes_nf <- function(region_id, year = 2024, multicores = 1, memsize = 120, version = "nf", prodes_loader = NULL) {
-    if (year != 2024) {
+    if (!any(year != c(2024, 2025))) {
         cli::cli_abort("Invalid year. Only 2024 is supported")
     }
 
     # Define current year
-    year <- 2024
+    year <- 2025
 
     # Define output dir
     output_dir <- .prodes_dir(version = version, year = year)
