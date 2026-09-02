@@ -158,32 +158,32 @@ prodes_generate_mask <- function(target_year,
 
     if (target_year >= 2024) {
         cli::cli_abort(
-            "Nothing to do: 2024 is the most recent year; the forest in this year represents the actual available forest"
+            "Nothing to do: 2024 and 2025 are reference years; the forest in these years represents the actual available forest"
         )
     }
 
     # Define deforestation years (we move from the future to the past).
     # The goal of this function is to "regenerate the forest area".
     # The idea is as follows:
-    # If an area is known to be deforested in 2024, by definition, it was forest in 2023.
+    # If an area is known to be deforested in 2025, by definition, it was forest in 2024.
     # Generalizing: if an area is deforested in year `t`, it was forest in year `t - 1`.
     #
     # Therefore, to generate PRODES with a forest mask, we proceed as follows:
     # Example:
     #   target year = 2016
-    #   deforestation years = 2024 – 2017
+    #   deforestation years = 2025 – 2017
     # All of these deforestation years correspond to forest in 2016.
-    deforestation_years <- paste0("d", (target_year + 1):2024)
-    residual_future_years <- paste0("r", (target_year + 1):2024)
+    deforestation_years <- paste0("d", (target_year + 1):2025)
+    residual_future_years <- paste0("r", (target_year + 1):2025)
     residual_past_years <- paste0("r", 2000:(target_year - 1))
 
     if (target_year == 2000) {
-        deforestation_years <- paste0("d", target_year:2024)
+        deforestation_years <- paste0("d", target_year:2025)
     }
 
     # Define PRODES loader
     if (is.null(prodes_loader)) {
-        prodes_loader <- load_prodes_2024
+        prodes_loader <- load_prodes_2025
 
         if (target_year <= 2007) {
             prodes_loader <- get(paste0("load_prodes_", target_year))
@@ -373,8 +373,8 @@ prodes_generate_mask <- function(target_year,
 }
 
 #' @export
-load_prodes_nf <- function(version = "nf", multicores = 32, memsize = 120) {
-    prodes_dir <- .prodes_dir(version = version, year = 2024)
+load_prodes_nf <- function(version = "nf", year = 2025, multicores = 32, memsize = 120) {
+    prodes_dir <- .prodes_dir(version = version, year = year)
     prodes_rds <- .prodes_rds(prodes_dir)
 
     if (fs::file_exists(prodes_rds)) {

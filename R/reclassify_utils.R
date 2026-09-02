@@ -85,8 +85,8 @@
     chunks[["reference_id"]] <- reference_id
     chunks[["target_id"]] <- target_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block
@@ -270,8 +270,8 @@ reclassify_remap_pixels <- function(file,
     chunks[["file"]] <- file
     chunks[["rules"]] <- list(rules)
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block

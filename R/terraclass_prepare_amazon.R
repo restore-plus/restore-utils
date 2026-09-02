@@ -90,7 +90,7 @@ prepare_terraclass_amazon <- function(years, region_id, fix_non_observed = TRUE,
                 multicores = multicores, memsize = memsize
             )
             # Creating cube
-            current_cube <- load_terraclass_2024(
+            current_cube <- load_terraclass_amazon_2024(
                 memsize = memsize, multicores = multicores
             )
             # Define output dir
@@ -354,7 +354,7 @@ prepare_terraclass_amazon <- function(years, region_id, fix_non_observed = TRUE,
             fs::dir_create(output_dir)
 
             # Creating cube
-            current_cube <- get(paste0("load_terraclass_amazon", year_to_apply))
+            current_cube <- get(paste0("load_terraclass_amazon_", year_to_apply))
             current_cube <- current_cube(
                 memsize = memsize, multicores = multicores
             )
@@ -440,8 +440,8 @@ prepare_terraclass_amazon <- function(years, region_id, fix_non_observed = TRUE,
     chunks[["urban_id"]] <- urban_id
     chunks[["nb_id"]] <- nb_id
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
     # Process data!
     block_files <- sits:::.jobs_map_parallel_chr(chunks, function(chunk) {
         # Get chunk block

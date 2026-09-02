@@ -523,8 +523,8 @@ download_prodes <- function(year, output_dir, version = "v2") {
 
 #' @export
 prepare_prodes_nf <- function(region_id, year = 2024, multicores = 1, memsize = 120, version = "nf", prodes_loader = NULL) {
-    if (!any(year != c(2024, 2025))) {
-        cli::cli_abort("Invalid year. Only 2024 is supported")
+    if (!year %in% c(2024, 2025)) {
+        cli::cli_abort("Invalid year. Only 2024 and 2025 are supported")
     }
 
     # Define current year
@@ -690,8 +690,9 @@ prepare_prodes <- function(
             )
         }
 
-        # If year is greater or equal to 2024, skip mask generation
-        if (year >= 2025) {
+        # 2024 and 2025 are reference years: they are only downloaded and
+        # cropped, so there is no mask to generate for them.
+        if (year >= 2024) {
             return(NULL)
         }
 

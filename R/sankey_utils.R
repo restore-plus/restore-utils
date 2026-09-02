@@ -161,8 +161,8 @@ sankey_prepare <- function(cube, years, output_dir, multicores = 10,
     chunks[[".cube_labels"]] <- rep(list(cube_labels), nrow(chunks))
 
     # Start workers
-    sits:::.parallel_start(workers = multicores)
-    on.exit(sits:::.parallel_stop(), add = TRUE)
+    started <- sits:::.parallel_start(workers = multicores)
+    on.exit(sits:::.parallel_stop(started), add = TRUE)
 
     # Process chunks in parallel
     data <- sits:::.jobs_map_parallel_dfr(chunks, function(chunk) {
