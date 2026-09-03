@@ -1628,7 +1628,8 @@ load_prodes_2025 <- function(version = "v2", multicores = 32, memsize = 120) {
                        "64" = "r2024",
                        "65" = "r2025",
                        "91" = "Hidrografia",
-                       "100" = "Vegetação Nativa"
+                       "100" = "Vegetação Nativa",
+                       "101" = "Vegetação nativa não florestal"
             )
         )
 
