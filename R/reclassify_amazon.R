@@ -269,7 +269,7 @@ reclassify_amazon_rule10_urban_area <- function(cube, mask, multicores, memsize,
         cube = cube,
         mask = mask,
         rules = list(
-            "area_urbanizada" = mask == "URBANIZADA"
+            "area_urbanizada" = mask %in% c("URBANIZADA", "Área urbanizada")
         ),
         exclude_mask_na = exclude_mask_na,
         multicores = multicores,
