@@ -2455,3 +2455,59 @@ reclassify_amazon_rule39_perene_scatter_control <- function(files,
     # Return!
     return(out_file)
 }
+
+#' @export
+reclassify_amazon_rule40_vs_pasture_restore <- function(cube, mask, multicores, memsize, output_dir, version, exclude_mask_na = FALSE) {
+    cube <- sits::sits_reclassify(
+        cube = cube,
+        mask = mask,
+        rules = list(
+            "vs_pasture" = cube == "vegetacao_secundaria" & mask == "Pastagem"
+        ),
+        exclude_mask_na = exclude_mask_na,
+        multicores = multicores,
+        memsize = memsize,
+        output_dir = output_dir,
+        version = version
+    )
+
+    .reclassify_save_rds(cube, output_dir, version)
+}
+
+#' @export
+reclassify_amazon_rule41_pasture_annual_agriculture_tc <- function(cube, mask, multicores, memsize, output_dir, version, exclude_mask_na = FALSE) {
+    cube_tmp <- sits::sits_reclassify(
+        cube = cube,
+        mask = cube,
+        rules = list(
+            "pasture_annual_agriculture" = cube == "2ciclos"
+        ),
+        exclude_mask_na = exclude_mask_na,
+        multicores = multicores,
+        memsize = memsize,
+        output_dir = output_dir,
+        version = paste0(version, "-tmp")
+    )
+
+    cube <- sits::sits_reclassify(
+        cube = cube_tmp,
+        mask = mask,
+        rules = list(
+            "2ciclos" = mask %in% c(
+                "CULTURA AGRICOLA TEMPORARIA DE 1 CICLO",
+                "CULTURA AGRICOLA TEMPORARIA DE MAIS DE 1 CICLO",
+                "CULTURA AGRICOLA TEMPORARIA" # terraclass 2008, 2010
+            )
+        ),
+        exclude_mask_na = exclude_mask_na,
+        multicores = multicores,
+        memsize = memsize,
+        output_dir = output_dir,
+        version = version
+    )
+
+    # delete temp file
+    fs::file_delete(cube_tmp[["file_info"]][[1]][["path"]])
+
+    .reclassify_save_rds(cube, output_dir, version)
+}
