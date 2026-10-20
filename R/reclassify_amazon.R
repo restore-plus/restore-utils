@@ -27,7 +27,7 @@ reclassify_amazon_rule0_forest <- function(cube, mask, multicores, memsize, outp
         cube = cube,
         mask = mask,
         rules = list(
-            "Forest" = cube == "Forest" | mask == "Vegetação Nativa"
+            "Forest" = cube == "Forest" | mask %in% c("Vegetação Nativa", "Floresta")
         ),
         exclude_mask_na = exclude_mask_na,
         multicores = multicores,
@@ -47,7 +47,7 @@ reclassify_amazon_rule1_secundary_vegetation <- function(cube, mask, multicores,
         rules = list(
             "vegetacao_secundaria" = cube == "vegetacao_secundaria" |
                 cube %in% c("Forest", "Riparian_Forest", "Mountainside_Forest") &
-                mask != "Vegetação Nativa"
+                !(mask %in% c("Vegetação Nativa", "Floresta"))
         ),
         exclude_mask_na = exclude_mask_na,
         multicores = multicores,
@@ -329,7 +329,7 @@ reclassify_amazon_rule12_non_forest <- function(cube, mask, multicores, memsize,
         cube = cube,
         mask = mask,
         rules = list(
-            "nat_non_forest" = mask == "NAO FLORESTA"
+            "nat_non_forest" = mask %in% c("NAO FLORESTA", "Natural não florestal")
         ),
         exclude_mask_na = exclude_mask_na,
         multicores = multicores,
@@ -694,7 +694,15 @@ reclassify_amazon_rule19_perene <- function(cube, mask, multicores, memsize,
     # build args for expression
     terraclass_years <- c(2008, 2010, 2012, 2014, 2018, 2020, 2022, 2024)
 
-    if (!rarg_year %in% terraclass_years) {
+    if (rarg_year == 2025) {
+        rules_expression <- bquote(
+            list(
+                "Perene" = mask == "Perene" # assuming `mask` is the Restore+ classification from 2024
+            )
+        )
+    }
+
+    else if (!rarg_year %in% terraclass_years) {
         rules_expression <- bquote(
             list(
                 "Perene" = ((
@@ -2508,6 +2516,26 @@ reclassify_amazon_rule41_pasture_annual_agriculture_tc <- function(cube, mask, m
 
     # delete temp file
     fs::file_delete(cube_tmp[["file_info"]][[1]][["path"]])
+
+    .reclassify_save_rds(cube, output_dir, version)
+}
+
+#' @export
+reclassify_amazon_rule42_secundary_vegetation_v2025 <- function(cube, mask, multicores, memsize, output_dir, version, exclude_mask_na = FALSE) {
+    cube <- sits::sits_reclassify(
+        cube = cube,
+        mask = mask,
+        rules = list(
+            "vegetacao_secundaria" = cube == "vegetacao_secundaria" |
+                cube %in% c("Forest", "Riparian_Forest", "Mountainside_Forest") &
+                mask == "r2025"
+        ),
+        exclude_mask_na = exclude_mask_na,
+        multicores = multicores,
+        memsize = memsize,
+        output_dir = output_dir,
+        version = version
+    )
 
     .reclassify_save_rds(cube, output_dir, version)
 }
