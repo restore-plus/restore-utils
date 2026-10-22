@@ -24,9 +24,9 @@
 
     # List of dataset URLs
     urls <- c(
-        yearly_deforestation_nf           = "https://www.dropbox.com/scl/fi/r2u5b0ekbbp7ujjqkt226/yearly_deforestation_nf_biome.zip?rlkey=atqdhh1vvvk6ndv5xrzvwivzf&dl=1",
-        residual_biome                    = "https://www.dropbox.com/scl/fi/31rmb5t0jdlp8087yfogd/residual_nf_biome.zip?rlkey=1qkm72kus5g07yik5azyyxqw4&dl=1",
-        accumulated_deforestation_2000_nf = "https://www.dropbox.com/scl/fi/vu9iazykmegj545nrtvjr/accumulated_deforestation_2000_nf_biome.zip?rlkey=bg01nny9j4qlvhpy60m6omsvd&st=xozk6t3j&dl=1"
+        yearly_deforestation_nf           = "https://www.dropbox.com/scl/fi/rstsyx47c8zcr1yx0b2ta/yearly_deforestation_nf_biome_amazonia_v20261016.zip?rlkey=wsl25jfeoqnvjqdmios7yknwm&st=h2rv7smy&dl=1",
+        residual_biome                    = "https://www.dropbox.com/scl/fi/or7kf4wt3v7ngvanp98wm/residual_nf_biome_amazonia_v20261016.zip?rlkey=5yi0vu0usy6cznukip6y53aap&st=d2k9wqua&dl=1",
+        accumulated_deforestation_2000_nf = "https://www.dropbox.com/scl/fi/2w3yvbto7ua00jmrsb9g6/accumulated_deforestation_2000_nf_biome_amazonia_v20261016.zip?rlkey=xscc3bdilvr672advsdlivdom&st=xb23axpz&dl=1"
     )
 
     # Iterate over URLs, download, unzip, and collect .shp
