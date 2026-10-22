@@ -697,7 +697,7 @@ reclassify_amazon_rule19_perene <- function(cube, mask, multicores, memsize,
     if (rarg_year == 2025) {
         rules_expression <- bquote(
             list(
-                "Perene" = mask == "Perene" # assuming `mask` is the Restore+ classification from 2024
+                "Perene" = mask == "Agricultura Perene" # assuming `mask` is the Restore+ classification from 2024
             )
         )
     }
