@@ -680,6 +680,12 @@ prepare_prodes <- function(
         # Create output dir
         fs::dir_create(output_dir)
 
+        # Resume: `cube.rds` is only written once the mask of a year is done
+        if (year < 2024 && fs::file_exists(output_dir / "cube.rds")) {
+            cli::cli_alert_info("Skipping {year}: mask already generated")
+            return(NULL)
+        }
+
         # Download and crop the specified year
         if (years_to_crop[[idx]]) {
             .crop_prodes(
