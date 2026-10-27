@@ -156,10 +156,8 @@ prodes_generate_mask <- function(target_year,
 
     cli::cli_inform("> Processing {target_year}")
 
-    if (target_year >= 2024) {
-        cli::cli_abort(
-            "Nothing to do: 2024 and 2025 are reference years; the forest in these years represents the actual available forest"
-        )
+    if (target_year > 2025) {
+        cli::cli_abort("PRODES available only until 2025")
     }
 
     # Define deforestation years (we move from the future to the past).

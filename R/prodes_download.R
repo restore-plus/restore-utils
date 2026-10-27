@@ -22,9 +22,9 @@
         year = c(2025, 2024, 2025, 2024, 2000:2007)
     )
 
-    years <- 2000:2022
+    years <- 2000:2024
     map_files <- glue::glue(
-        "https://restore-plus.s3.us-east-1.amazonaws.com/zenodo/amazon/v2/raster/{years}/LANDSAT_OLI_MOSAIC_{years}-01-01_{years}-12-31_class_v1.tif"
+        "https://restore-plus.s3.us-east-1.amazonaws.com/zenodo/amazon/v3/raster/{years}/LANDSAT_OLI_MOSAIC_{years}-01-01_{years}-12-31_class_v1.tif"
     )
     map_tbl <- tibble::tibble(
         file = map_files,
@@ -282,10 +282,10 @@
     files_to_move <- purrr::map_dfr(seq_len(length(years)), function(idx) {
         # Get current year
         year <- years[[idx]]
-        previous_year <- min(year - 1, 2022)
+        previous_year <- min(year - 1, 2024)
 
-        if (year > 2024) {
-            cli::cli_abort("PRODES available only until 2024")
+        if (year > 2025) {
+            cli::cli_abort("PRODES available only until 2025")
         }
 
         # Define output dir
@@ -322,11 +322,11 @@
 
         # Process forest mask
         deforestation_current_year <- paste0("d", year)
-        deforestation_future_years <- paste0("d", (year+1):2030)
+        deforestation_future_years <- intersect(paste0("d", (year+1):2030), sits::sits_labels(prodes_next_year_orig))
         deforestation_past_years <- paste0("d", 2000:(year - 1))
 
         residual_current_year <- paste0("r", year)
-        residual_future_years <- paste0("r", (year+1):2030)
+        residual_future_years <- intersect(paste0("r", (year+1):2030), sits::sits_labels(prodes_next_year_orig))
         residual_past_years <- paste0("r", 2000:(year - 1))
 
         rules_expression <- list(
