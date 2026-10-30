@@ -96,7 +96,7 @@ reclassify_amazon_rule3_pasture_wetland <- function(cube, mask, multicores, mems
         residuals_years <- paste0("r", 2010:rarg_year)
     }
     deforestation_years <- paste0("d", 2000:(rarg_year - 1))
-    deforestation_years <- c(deforestation_years, residuals_years)
+    deforestation_years <- c(deforestation_years, residuals_years, "Others")
 
     # build expression
     rules_expression <- bquote(
